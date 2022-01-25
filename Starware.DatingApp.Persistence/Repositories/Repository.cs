@@ -10,7 +10,7 @@ using Starware.DatingApp.Core.Domains;
 
 namespace Starware.DatingApp.Persistence.Repositories
 {
-    internal class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T> : IRepository<T> where T : Entity
     {
         private readonly DbContext context;
         private DbSet<T> Entites { get; set; }
@@ -40,13 +40,17 @@ namespace Starware.DatingApp.Persistence.Repositories
 
         public int Insert(T entity)
         {
+            entity.CreationDate = DateTime.Now;
+            entity.CreatedBy= "User";
             context.Add(entity); 
             return entity.Id;
         }
 
         public int Update(T entity)
         {
-           context.Update(entity);
+            entity.LastModifiedDate = DateTime.Now;
+            entity.LastModifiedBy = "User";
+            context.Update(entity);
             context.SaveChanges();
             return entity.Id;
         }

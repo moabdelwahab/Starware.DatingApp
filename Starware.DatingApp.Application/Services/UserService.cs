@@ -10,20 +10,17 @@ using System.Threading.Tasks;
 
 namespace Starware.DatingApp.Application.Services
 {
-    internal class UserService : IUserService
+    public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public UserService()
+        public UserService(IUnitOfWork unitOfWork)
         {
-
+            this.unitOfWork = unitOfWork;
         }
         public IEnumerable<AppUser> GetAllUser()
         {
-           using(DatingAppContext context = new DatingAppContext())
-            {
-
-            }
+            return unitOfWork.UserRepository.GetAll();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Starware.DatingApp.Core.PersistenceContracts
 {
     public interface IUnitOfWork
     {
-        public IUserRepository UserRepository { get; set; }
+        public IUserRepository UserRepository { get; }
 
     }
 }

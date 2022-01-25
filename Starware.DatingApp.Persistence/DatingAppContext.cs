@@ -7,10 +7,8 @@ namespace Starware.DatingApp.Persistence
     {
         public DatingAppContext(DbContextOptions options) : base(options)
         {
-            
+             
         }
-
-
         public DbSet<AppUser> Users { get; set; }
     }
 }

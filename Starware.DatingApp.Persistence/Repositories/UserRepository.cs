@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Starware.DatingApp.Core.Domains;
+using Starware.DatingApp.Core.PersistenceContracts;
 
 namespace Starware.DatingApp.Persistence.Repositories
 {
-    internal class UserRepository : Repository<AppUser>
+    public class UserRepository : Repository<AppUser> , IUserRepository
     {
-        public UserRepository(DbContext context) : base(context)
+        public UserRepository(DatingAppContext context) : base(context)
         {
         }
     }
