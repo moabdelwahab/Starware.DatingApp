@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\starware.datingapp.core\Starware.DatingApp.Core.csproj" />
+    <ProjectReference Include="..\starware.datingapp.persistence\Starware.DatingApp.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

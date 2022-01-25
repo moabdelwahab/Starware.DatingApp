@@ -1,8 +1,7 @@
-namespace Starware.DatingApp.Core.Domain
+namespace Starware.DatingApp.Core.Domains
 {
-    public class AppUser
+    public class AppUser : Entity
     {
-        public int Id { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }

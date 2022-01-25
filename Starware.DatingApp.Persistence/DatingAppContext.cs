@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Starware.DatingApp.Core.Domains;
 
 namespace Starware.DatingApp.Persistence
 {
@@ -6,7 +7,10 @@ namespace Starware.DatingApp.Persistence
     {
         public DatingAppContext(DbContextOptions options) : base(options)
         {
-
+            
         }
+
+
+        public DbSet<AppUser> Users { get; set; }
     }
 }

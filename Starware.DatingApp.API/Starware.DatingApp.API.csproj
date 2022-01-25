@@ -6,7 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="microsoft.entityframeworkcore.design" Version="6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.sqlite" Version="6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\starware.datingapp.persistence\Starware.DatingApp.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
