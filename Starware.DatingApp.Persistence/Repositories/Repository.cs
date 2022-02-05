@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Starware.DatingApp.Core.Domains;
+using System.Linq.Expressions;
 
 namespace Starware.DatingApp.Persistence.Repositories
 {
@@ -21,37 +22,37 @@ namespace Starware.DatingApp.Persistence.Repositories
             this.context = context;
             this.Entites = context.Set<T>();
         }
-        public bool Delete(T entity)
+        public async Task<bool> Delete(T entity)
         {
-            context.Remove(entity);
-            context.SaveChanges();
-            return true;
+          context.Remove(entity);
+          return await context.SaveChangesAsync() > 0 ;
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return Entites.AsEnumerable();
+            return await Entites.ToListAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return Entites.SingleOrDefault(x => x.Id == id);
+            return await Entites.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public int Insert(T entity)
+        public async Task<int> Insert(T entity)
         {
             entity.CreationDate = DateTime.Now;
             entity.CreatedBy= "User";
-            context.Add(entity); 
+            context.Add(entity);
+            await context.SaveChangesAsync();
             return entity.Id;
         }
 
-        public int Update(T entity)
+        public async Task<int> Update(T entity)
         {
             entity.LastModifiedDate = DateTime.Now;
             entity.LastModifiedBy = "User";
             context.Update(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return entity.Id;
         }
     }

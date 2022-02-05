@@ -8,11 +8,11 @@ namespace Starware.DatingApp.Core.PersistenceContracts
 {
     public interface IRepository<T> 
     {
-        IEnumerable<T> GetAll();
-        T GetById (int id);
-        int Update(T entity);
-        bool Delete(T entity);
-        int Insert(T entity);
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById (int id);
+        Task<int> Update(T entity);
+        Task<bool> Delete(T entity);
+        Task<int> Insert(T entity);
         
     }
 }

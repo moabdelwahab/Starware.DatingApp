@@ -1,5 +1,6 @@
 ﻿using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Core.DTOs;
+using Starware.DatingApp.SharedKernal.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace Starware.DatingApp.Core.ServiceContracts
 {
-    public interface IUserService
+    public interface IAccountService
     {
-        Task<IEnumerable<AppUser>> GetAllUser();
-        Task<AppUser> GetById(int id);
-        Task<AppUser> GetByUsername(string username);
-        Task<int> AddUser(AppUser user); 
+        Task<ApiResponse<UserDto>> Login(LoginDto loginData);
+        Task<ApiResponse<int>> Register(RegisterDto registerData);
     }
 }

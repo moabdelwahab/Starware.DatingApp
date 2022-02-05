@@ -2,8 +2,10 @@
 
 # compiled output
 /dist
+/e2e
 /tmp
 /out-tsc
+/ssl
 # Only exists if Bazel was run
 /bazel-out
 

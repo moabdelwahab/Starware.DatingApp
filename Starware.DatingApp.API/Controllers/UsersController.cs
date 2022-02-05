@@ -3,9 +3,7 @@ using Starware.DatingApp.Core.ServiceContracts;
 
 namespace Starware.DatingApp.API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
         private readonly IUserService userService;
 
@@ -16,9 +14,17 @@ namespace Starware.DatingApp.API.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        public ActionResult GetAllUsers()
+        public async Task<ActionResult> GetAllUsers()
         {
-            return Ok(this.userService.GetAllUser());
+            return  Ok(await this.userService.GetAllUser());
         }
+
+        [HttpGet]
+        [Route("GetUserById/{id}")]
+        public async Task<ActionResult>  GetUserById(int id)
+        {
+            return Ok( await this.userService.GetById(id));
+        }
+
     }
 }

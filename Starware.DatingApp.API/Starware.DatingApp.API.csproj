@@ -16,7 +16,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\starware.datingapp.application\Starware.DatingApp.Application.csproj" />
+    <ProjectReference Include="..\starware.datingapp.core\Starware.DatingApp.Core.csproj" />
     <ProjectReference Include="..\starware.datingapp.persistence\Starware.DatingApp.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 </Project>

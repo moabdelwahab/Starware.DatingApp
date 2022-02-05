@@ -18,9 +18,25 @@ namespace Starware.DatingApp.Application.Services
         {
             this.unitOfWork = unitOfWork;
         }
-        public IEnumerable<AppUser> GetAllUser()
+
+        public async Task<int> AddUser(AppUser user)
         {
-            return unitOfWork.UserRepository.GetAll();
+            return await unitOfWork.UserRepository.Insert(user);
+        }
+
+        public async Task<IEnumerable<AppUser>> GetAllUser()
+        {
+            return await unitOfWork.UserRepository.GetAll();
+        }
+
+        public async Task<AppUser> GetById(int id)
+        {
+            return await unitOfWork.UserRepository.GetById(id);
+        }
+
+        public async Task<AppUser> GetByUsername(string username)
+        {
+            return await unitOfWork.UserRepository.GetByUserName(username);
         }
     }
 }

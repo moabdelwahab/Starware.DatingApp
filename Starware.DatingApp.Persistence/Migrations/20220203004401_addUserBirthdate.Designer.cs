@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Starware.DatingApp.Persistence;
 
@@ -10,9 +11,10 @@ using Starware.DatingApp.Persistence;
 namespace Starware.DatingApp.Persistence.Migrations
 {
     [DbContext(typeof(DatingAppContext))]
-    partial class DatingAppContextModelSnapshot : ModelSnapshot
+    [Migration("20220203004401_addUserBirthdate")]
+    partial class addUserBirthdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
@@ -23,7 +25,7 @@ namespace Starware.DatingApp.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime>("Birthdate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CreatedBy")

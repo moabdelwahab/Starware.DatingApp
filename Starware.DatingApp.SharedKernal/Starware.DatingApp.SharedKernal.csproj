@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="InfrastructureContracts\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\starware.datingapp.sharedkernal\Starware.DatingApp.SharedKernal.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
