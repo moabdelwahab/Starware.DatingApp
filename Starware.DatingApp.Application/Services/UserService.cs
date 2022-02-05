@@ -19,6 +19,8 @@ namespace Starware.DatingApp.Application.Services
             this.unitOfWork = unitOfWork;
         }
 
+
+
         public async Task<int> AddUser(AppUser user)
         {
             return await unitOfWork.UserRepository.Insert(user);
