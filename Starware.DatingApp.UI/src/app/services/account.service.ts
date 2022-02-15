@@ -6,6 +6,7 @@ import { ApiResponse } from '../models/common/ApiResponse';
 import { LoginDto } from '../models/users/LoginDto';
 import { UserDto } from '../models/users/UserDto';
 import { map } from 'rxjs/operators'
+import { RegisterDto } from '../models/users/RegisterDto';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,17 @@ export class AccountService {
     );
   }
 
+  Register(registerDto: RegisterDto): Observable<ApiResponse<UserDto>> {
+    return this.httpClient.post<ApiResponse<UserDto>>(this.apiUrl + 'Register', registerDto).pipe(
+      map((response: ApiResponse<UserDto>) => {
+        if (response.data) {
+          localStorage.setItem('user', JSON.stringify(response.data));
+          this.currentUser.next(response.data);
+          return response;
+        }
+      })
+    );
+  }
   setCurrentUser(user: UserDto)
   {
     this.currentUser.next(user);

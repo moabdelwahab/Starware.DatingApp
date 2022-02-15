@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="container mt-5">
+    <div style="text-align: center;" *ngIf="!registerMode">
+        <h1>Find your match</h1>
+        <p class="lead">Come on in to view matches... all you need to do is sign up!</p>
+        <div class="text-center">
+            <button name="register" (click)="registerToggle()" class="btn btn-primary btn-lg mr-2">Register</button>
+            <button name="learnMore" class="btn btn-info btn-lg mr-2">Learn more</button>
+        </div>
+    </div>
+    <div ng-a class="container" *ngIf="registerMode">
+        <app-register [systemUsers]="systemUsers" (userHasRegistered)="registerToggle($event)"></app-register>
+    </div>
+</div>

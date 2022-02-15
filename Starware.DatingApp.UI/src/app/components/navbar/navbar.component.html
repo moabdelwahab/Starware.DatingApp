@@ -1,23 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
 
-    <a class="navbar-brand" href="#">Dating App</a>
+    <a class="navbar-brand" disabled>Dating App</a>
 
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+    <ul *ngIf="loggedIn" class="navbar-nav mr-auto">
+
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="members" routerLinkActive='active'>Matches <span class="sr-only">(current)</span></a>
       </li>
 
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Matches <span class="sr-only">(current)</span></a>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="lists" routerLinkActive='active'>Matches <span class="sr-only">(current)</span></a>
       </li>
 
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Lists <span class="sr-only">(current)</span></a>
-      </li>
-
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Messages<span class="sr-only">(current)</span></a>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="messages" routerLinkActive='active'>Messages<span class="sr-only">(current)</span></a>
       </li>
     </ul>
 
@@ -35,7 +32,8 @@
         </li>
       </ul>
     </div>
-    <form (ngSubmit)="Login()" *ngIf="!loggedIn" #LoginForm="ngForm" class="form-inline my-2 my-lg-0">
+
+    <form #LoginForm="ngForm" (ngSubmit)="Login()" *ngIf="!loggedIn" class="form-inline my-2 my-lg-0">
       <input [(ngModel)]="loginData.userName" name="username" class="form-control mr-sm-2" type="text"
         placeholder="Username" aria-label="Username">
       <input [(ngModel)]="loginData.password" name="username" class="form-control mr-sm-2" type="password"
