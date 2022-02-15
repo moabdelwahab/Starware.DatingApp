@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Starware.DatingApp.Core.DTOs;
 using Starware.DatingApp.Core.ServiceContracts;
+using Starware.DatingApp.SharedKernal.Common;
 
 namespace Starware.DatingApp.API.Controllers
 {
@@ -15,13 +16,13 @@ namespace Starware.DatingApp.API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerData)
+        public async Task<ActionResult<ApiResponse<UserDto>>> Register([FromBody] RegisterDto registerData)
         {
             return Ok(await this.accountService.Register(registerData));
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginData)
+        public async Task<ActionResult<ApiResponse<UserDto>>> Login([FromBody] LoginDto loginData)
         {
             return Ok(await this.accountService.Login(loginData));
         }
