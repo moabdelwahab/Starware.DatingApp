@@ -12,6 +12,6 @@ namespace Starware.DatingApp.Core.ServiceContracts
     public interface IAccountService
     {
         Task<ApiResponse<UserDto>> Login(LoginDto loginData);
-        Task<ApiResponse<int>> Register(RegisterDto registerData);
+        Task<ApiResponse<UserDto>> Register(RegisterDto registerData);
     }
 }

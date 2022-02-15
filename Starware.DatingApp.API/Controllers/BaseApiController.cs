@@ -6,6 +6,5 @@ namespace Starware.DatingApp.API.Controllers
     [Route("api/[Controller]")]
     public class BaseApiController : ControllerBase
     {
-
     }
 }

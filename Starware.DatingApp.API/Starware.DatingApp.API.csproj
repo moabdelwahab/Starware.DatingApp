@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
     <PackageReference Include="microsoft.entityframeworkcore.design" Version="6">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -17,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\starware.datingapp.application\Starware.DatingApp.Application.csproj" />
     <ProjectReference Include="..\starware.datingapp.core\Starware.DatingApp.Core.csproj" />
+    <ProjectReference Include="..\starware.datingapp.infrastructure\Starware.DatingApp.Infrastructure.csproj" />
     <ProjectReference Include="..\starware.datingapp.persistence\Starware.DatingApp.Persistence.csproj" />
   </ItemGroup>
 

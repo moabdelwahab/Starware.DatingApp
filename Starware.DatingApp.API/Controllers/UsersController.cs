@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Starware.DatingApp.Core.ServiceContracts;
 
 namespace Starware.DatingApp.API.Controllers
@@ -19,12 +20,12 @@ namespace Starware.DatingApp.API.Controllers
             return  Ok(await this.userService.GetAllUser());
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetUserById/{id}")]
         public async Task<ActionResult>  GetUserById(int id)
         {
             return Ok( await this.userService.GetById(id));
         }
-
     }
 }

@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+
+    <a class="navbar-brand" href="#">Dating App</a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Matches <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Lists <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Messages<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+
+    <div *ngIf="loggedIn" class="btn-group" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+        aria-controls="dropdown-basic">Welcome {{ (this.accountService.$currentUser | async).userName }} <span
+          class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+        <li role="menuitem"><a class="dropdown-item" href="#">Edit Profile</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Messages</a></li>
+        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
+        <li class="divider dropdown-divider"></li>
+        <li role="menuitem"><a class="dropdown-item" (click)="logout()" href="#">Logout</a>
+        </li>
+      </ul>
+    </div>
+    <form (ngSubmit)="Login()" *ngIf="!loggedIn" #LoginForm="ngForm" class="form-inline my-2 my-lg-0">
+      <input [(ngModel)]="loginData.userName" name="username" class="form-control mr-sm-2" type="text"
+        placeholder="Username" aria-label="Username">
+      <input [(ngModel)]="loginData.password" name="username" class="form-control mr-sm-2" type="password"
+        placeholder="Password" aria-label="Password">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+    </form>
+
+  </div>
+</nav>

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,11 +13,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Starware.DatingApp.API.Extensions;
 using Starware.DatingApp.Application.Services;
 using Starware.DatingApp.Core.Domains;
+using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.PersistenceContracts;
 using Starware.DatingApp.Core.ServiceContracts;
+using Starware.DatingApp.Infrastructure;
 using Starware.DatingApp.Persistence;
 using Starware.DatingApp.Persistence.Repositories;
 
@@ -33,27 +39,16 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddScoped<IUserRepository, UserRepository>();
-
-            services.AddScoped<IAccountService, AccountService>();
-
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddDbContext<DatingAppContext>(options =>
-            {
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
-            });
-
+            services.AddApplicationServices(Configuration);
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
             
+            services.AddIdentityServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,7 +65,9 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200").WithOrigins("http://localhost:4200"));
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

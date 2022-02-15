@@ -1,4 +1,4 @@
-import { Entity } from "./Entity";
+import { Entity } from "../common/Entity";
 
 export class AppUser extends Entity  {
     userName:string ;

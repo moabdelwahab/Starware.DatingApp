@@ -1,5 +1,6 @@
 ﻿using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Core.DTOs;
+using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.SharedKernal.Common;
 using Starware.DatingApp.SharedKernal.Utilities;
@@ -15,10 +16,14 @@ namespace Starware.DatingApp.Application.Services
     public class AccountService : IAccountService
     {
         private readonly IUserService userService;
+        private readonly ITokenService tokenService;
 
-        public AccountService(IUserService userService)
+        public AccountService(IUserService userService,
+                              ITokenService tokenService
+            )
         {
             this.userService = userService;
+            this.tokenService = tokenService;
         }
         public async Task<ApiResponse<UserDto>> Login(LoginDto loginData)
         {
@@ -47,21 +52,24 @@ namespace Starware.DatingApp.Application.Services
                         return response;
                     }
                 }
-            }else
+            }
+            else
             {
                 response.Message = "Password is inccorect !!";
                 response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
                 return response;
             }
             response.Data = new UserDto();
+            response.Data.UserName = user.UserName;
             response.Data.Age = user.BirthDate.GetAgeFromDate();
             response.Data.Name = $"{user.FirstName } {user.MiddleName} {user.LastName}";
+            response.Data.Token = this.tokenService.CreateToken(user);
             return response;
         }
 
-        public async Task<ApiResponse<int>> Register(RegisterDto registerData)
+        public async Task<ApiResponse<UserDto>> Register(RegisterDto registerData)
         {
-            var response = new ApiResponse<int>();
+            var response = new ApiResponse<UserDto>();
             var hmac = new HMACSHA512();
             var user = new AppUser()
             {
@@ -75,7 +83,18 @@ namespace Starware.DatingApp.Application.Services
             };
 
             var newUserId = await this.userService.AddUser(user);
-            response.Data = newUserId;
+            
+            if (newUserId > 0)
+            {
+                var userDto = new UserDto()
+                {
+                    UserName = registerData.UserName,
+                    Age = registerData.BirthDate.GetAgeFromDate(),
+                    Token = this.tokenService.CreateToken(user),
+                    Name = $"{user.FirstName} {user.MiddleName} {user.LastName}"
+                };
+                response.Data = userDto;
+            }
 
             return response;
         }

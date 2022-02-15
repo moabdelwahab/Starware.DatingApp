@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="InfrastructureContracts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\starware.datingapp.sharedkernal\Starware.DatingApp.SharedKernal.csproj" />
   </ItemGroup>
 
