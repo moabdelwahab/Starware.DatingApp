@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Starware.DatingApp.Application.Mapping;
 using Starware.DatingApp.Application.Services;
 using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.PersistenceContracts;
@@ -17,6 +18,8 @@ namespace Starware.DatingApp.API.Extensions
             {
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.Core.ServiceContracts;
 
 namespace Starware.DatingApp.API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserService userService;
@@ -20,12 +22,19 @@ namespace Starware.DatingApp.API.Controllers
             return  Ok(await this.userService.GetAllUser());
         }
 
-        [Authorize]
         [HttpGet]
-        [Route("GetUserById/{id}")]
-        public async Task<ActionResult>  GetUserById(int id)
+        [Route("GetUserByUsername/{username}")]
+        public async Task<ActionResult>  GetuserByUsername(string username)
         {
-            return Ok( await this.userService.GetById(id));
+            return Ok( await this.userService.GetMemberByUsername(username));
         }
+
+        [HttpPut]
+        [Route("updateUser")]
+        public async Task<ActionResult> UpdateUser([FromBody] MemberDto member)
+        {
+            return Ok(await this.userService.UpdateUser(member));
+        }
+
     }
 }

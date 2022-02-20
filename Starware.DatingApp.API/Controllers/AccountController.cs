@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Starware.DatingApp.Core.DTOs;
+using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.SharedKernal.Common;
 
