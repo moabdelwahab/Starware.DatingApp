@@ -1,5 +1,5 @@
 ﻿using Starware.DatingApp.Core.Domains;
-using Starware.DatingApp.Core.DTOs;
+using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.SharedKernal.Common;
 using System;
 using System.Collections.Generic;

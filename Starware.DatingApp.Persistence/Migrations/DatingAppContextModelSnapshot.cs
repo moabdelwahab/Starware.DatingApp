@@ -26,6 +26,14 @@ namespace Starware.DatingApp.Persistence.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
@@ -36,6 +44,22 @@ namespace Starware.DatingApp.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Interests")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Introduction")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("KnownAs")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("TEXT");
 
@@ -43,6 +67,10 @@ namespace Starware.DatingApp.Persistence.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LookingFor")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -65,6 +93,48 @@ namespace Starware.DatingApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Starware.DatingApp.Core.Domains.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PublicId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Photo");
+                });
+
+            modelBuilder.Entity("Starware.DatingApp.Core.Domains.Photo", b =>
+                {
+                    b.HasOne("Starware.DatingApp.Core.Domains.AppUser", "User")
+                        .WithMany("Photos")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Starware.DatingApp.Core.Domains.AppUser", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

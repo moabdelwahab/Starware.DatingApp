@@ -40,8 +40,6 @@ namespace Starware.DatingApp.Persistence.Repositories
 
         public async Task<int> Insert(T entity)
         {
-            entity.CreationDate = DateTime.Now;
-            entity.CreatedBy= "User";
             context.Add(entity);
             await context.SaveChangesAsync();
             return entity.Id;
@@ -49,8 +47,6 @@ namespace Starware.DatingApp.Persistence.Repositories
 
         public async Task<int> Update(T entity)
         {
-            entity.LastModifiedDate = DateTime.Now;
-            entity.LastModifiedBy = "User";
             context.Update(entity);
             await context.SaveChangesAsync();
             return entity.Id;

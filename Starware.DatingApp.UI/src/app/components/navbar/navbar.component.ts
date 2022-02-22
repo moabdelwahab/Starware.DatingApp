@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ApiResponse } from 'src/app/models/common/ApiResponse';
 import { LoginDto } from 'src/app/models/users/LoginDto';
 import { UserDto } from 'src/app/models/users/UserDto';
 import { AccountService } from 'src/app/services/account.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-navbar',
@@ -11,42 +13,51 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
+  
+  
+  modalRef?: BsModalRef;
   loginData: LoginDto = new LoginDto();
-  loggedIn: boolean;
-  user :UserDto;
+
+  @Input() loggedIn: boolean;
+  @Input() user: UserDto;
+  @ViewChild('loginError') loginError; 
+  loginErrorMessage : string ;
 
   constructor(public accountService: AccountService,
-    private router: Router,
-    private toastr:ToastrService
-    ) { }
 
-  ngOnInit(): void {
-    this.getCurrentUser();
+    private router: Router,
+    private toastr: ToastrService,
+    private modalService: BsModalService) {
   }
 
+  ngOnInit(): void {
+  }
 
   Login() {
-    this.accountService.Login(this.loginData).subscribe();
-    this.getCurrentUser();
-    this.router.navigateByUrl('/members');
+    this.accountService.Login(this.loginData).subscribe((user: ApiResponse<UserDto>) => {
+      if (user?.data) {
+        this.loggedIn = true;
+      }
+    },
+    (error) => {
+      this.loginErrorMessage = error.message;
+      this.openModal(this.loginError);
+    } ,
+    () => {
+      if(this.loggedIn){
+        this.router.navigateByUrl('/members');
+      }
+    });
   }
 
   logout() {
     this.accountService.Logout();
     localStorage.clear();
+    this.loggedIn = false;
     this.router.navigateByUrl('/');
   }
 
-  getCurrentUser() {
-    this.accountService.$currentUser.subscribe(
-      (user) => {
-        this.loggedIn = !!user;
-        if (this.loggedIn) {
-          this.router.navigateByUrl('/members');
-          this.toastr.success("Welcome "+ user.name);
-        }
-      }
-    )
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
   }
 }

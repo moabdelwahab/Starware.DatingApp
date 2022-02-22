@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
         }else
         {
           this.toastrService.error("You have no authorization to access this !");
-          this.router.navigateByUrl('/');
+          return false;
         }
       })
     )

@@ -1,1 +1,46 @@
-<p>member-detail works!</p>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <img src="{{ user.photoUrl || './assest/user.png'}}" class="card-img-top img-thumbnail" alt="">
+                <div class="card-body">
+                    <div>
+                        <strong>location :</strong>
+                        <p>{{ user.city }} , {{user.country}}</p>
+                    </div>
+
+                    <div>
+                        <strong>Age :</strong>
+                        <p>{{user.age}} </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group d-flex">
+                        <button class="btn btn-primary">Like</button>
+                        <button class="btn btn-success">Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <tabset>
+                <tab heading="About {{user.userName}}" id="about">
+                    <h4 class="mt-4">Description</h4>
+                    <p>{{user.introduction}}</p>
+                    <h4>Looking for</h4>
+                    <p>{{user.lookingFor}}</p>
+                </tab>
+                <tab heading="Interests">
+                    <h4 class="mt-4">Interests</h4>
+                    <p>{{user.interests}}</p>
+                </tab>
+                <tab heading="Photos">
+                    <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
+                </tab>
+                <tab heading="Messages">
+                    messages will goes here ....
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</div>

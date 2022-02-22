@@ -6,15 +6,23 @@
     <ul *ngIf="loggedIn" class="navbar-nav mr-auto">
 
       <li class="nav-item ">
-        <a class="nav-link" routerLink="members" routerLinkActive='active'>Matches <span class="sr-only">(current)</span></a>
+        <a class="nav-link" routerLink="error" routerLinkActive='active'>error <span
+            class="sr-only">(current)</span></a>
       </li>
 
       <li class="nav-item ">
-        <a class="nav-link" routerLink="lists" routerLinkActive='active'>Matches <span class="sr-only">(current)</span></a>
+        <a class="nav-link" routerLink="members" routerLinkActive='active'>Matches <span
+            class="sr-only">(current)</span></a>
       </li>
 
       <li class="nav-item ">
-        <a class="nav-link" routerLink="messages" routerLinkActive='active'>Messages<span class="sr-only">(current)</span></a>
+        <a class="nav-link" routerLink="lists" routerLinkActive='active'>Lists <span
+            class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="messages" routerLinkActive='active'>Messages<span
+            class="sr-only">(current)</span></a>
       </li>
     </ul>
 
@@ -24,9 +32,8 @@
           class="caret"></span>
       </button>
       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-        <li role="menuitem"><a class="dropdown-item" href="#">Edit Profile</a></li>
+        <li role="menuitem"><a routerLink="/member/edit" class="dropdown-item" href="#">Edit Profile</a></li>
         <li role="menuitem"><a class="dropdown-item" href="#">Messages</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
         <li class="divider dropdown-divider"></li>
         <li role="menuitem"><a class="dropdown-item" (click)="logout()" href="#">Logout</a>
         </li>
@@ -40,6 +47,21 @@
         placeholder="Password" aria-label="Password">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
     </form>
+
+
+    <ng-template #loginError>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left text-danger">Login failed</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <p class="text-center">
+        {{this.loginErrorMessage}}
+       </p> 
+      </div>
+    </ng-template>
 
   </div>
 </nav>

@@ -1,6 +1,7 @@
+import { HttpStatusCode } from "src/app/common/StatusCode";
 
-export interface ApiResponse<T> {
-    statusCode : number;
+export class ApiResponse<T> {
+    statusCode : HttpStatusCode;
     message: string;
     data: T;
 }

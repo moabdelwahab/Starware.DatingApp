@@ -1,0 +1,19 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-3">
+            <button class="btn btn-primary" (click)="test404Error()">test404Error</button>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-primary" (click)="test401Error()">test401Error</button>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-primary" (click)="test500Error()">test500Error</button>
+        </div>
+        <div class="col-3">
+            <button class="btn btn-primary" (click)="test400Error()">test400Error</button>
+            <ul class="mt-3">
+                <li *ngFor="let error of errors">{{error}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

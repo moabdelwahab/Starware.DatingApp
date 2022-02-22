@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starware.DatingApp.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starware.DatingApp.Persistence", "starware.datingapp.persistence\Starware.DatingApp.Persistence.csproj", "{A9EE7E38-ABFE-46DB-A27E-E3F8D5201D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starware.DatingApp.UI", "starware.Datingapp.UI\Starware.DatingApp.UI.csproj", "{4806272F-32BE-43DF-B982-9F3A98EDEF30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starware.DatingApp.UI", "starware.Datingapp.UI\Starware.DatingApp.UI.csproj", "{4806272F-32BE-43DF-B982-9F3A98EDEF30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starware.DatingApp.SharedKernal", "starware.datingapp.sharedkernal\Starware.DatingApp.SharedKernal.csproj", "{A5FDA622-1801-4173-8308-6BB8B37C6FB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starware.DatingApp.SharedKernal", "starware.datingapp.sharedkernal\Starware.DatingApp.SharedKernal.csproj", "{A5FDA622-1801-4173-8308-6BB8B37C6FB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starware.DatingApp.Testing", "starware.datingapp.testing\Starware.DatingApp.Testing.csproj", "{6F2BF116-B503-4B9F-88A0-FE85D33791B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starware.DatingApp.Testing", "starware.datingapp.testing\Starware.DatingApp.Testing.csproj", "{6F2BF116-B503-4B9F-88A0-FE85D33791B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

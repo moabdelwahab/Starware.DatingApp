@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Starware.DatingApp.Core.DTOs
+namespace Starware.DatingApp.Core.DTOs.Users
 {
     public class UserDto
     {

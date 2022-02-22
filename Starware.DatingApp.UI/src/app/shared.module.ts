@@ -3,24 +3,25 @@ import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { BrowserModule } from '@angular/platform-browser';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery'; 
 
 
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass:'toast-bottom-right'
-    }),  
+    }) ,
+    TabsModule.forRoot() ,
+    ModalModule.forRoot() ,
+    NgxGalleryModule
   ],
-  exports:[BsDatepickerModule,BsDatepickerModule,ToastrModule]
+  exports:[BsDropdownModule,BsDatepickerModule,
+    ToastrModule,TabsModule,ModalModule,NgxGalleryModule]
 })
 export class SharedModule { }

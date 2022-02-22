@@ -1,5 +1,5 @@
 ﻿using Starware.DatingApp.Core.Domains;
-using Starware.DatingApp.Core.DTOs;
+using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.SharedKernal.Common;
@@ -29,13 +29,16 @@ namespace Starware.DatingApp.Application.Services
         {
             var response = new ApiResponse<UserDto>();
 
-            var user = await this.userService.GetByUsername(loginData.UserName);
+            var getUserResponse = await this.userService.GetByUsername(loginData.UserName);
 
-            if (user == null)
+            if (getUserResponse.Data == null)
             {
                 response.Message = "Username is not Exist !!";
+                response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
                 return response;
             }
+
+            var user = getUserResponse.Data;
 
             var hmac = new HMACSHA512(user.PasswordSalt);
 
@@ -84,7 +87,7 @@ namespace Starware.DatingApp.Application.Services
 
             var newUserId = await this.userService.AddUser(user);
             
-            if (newUserId > 0)
+            if (newUserId.Data > 0)
             {
                 var userDto = new UserDto()
                 {
