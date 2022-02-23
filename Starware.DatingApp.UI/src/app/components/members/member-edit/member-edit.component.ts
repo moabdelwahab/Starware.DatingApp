@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/models/common/ApiResponse';
@@ -29,7 +30,8 @@ export class MemberEditComponent implements OnInit {
 
   constructor(private userService:UsersService,
      private accountService:AccountService,
-     private toastr:ToastrService) {
+     private toastr:ToastrService,
+     private router:Router) {
 
    }
 
@@ -46,11 +48,22 @@ export class MemberEditComponent implements OnInit {
     );
   }
 
+
+
   updateMember()
   {
-    this.userService.updateUser(this.user).subscribe((reponse)=>{});
-    this.updateFrom.reset();
+    this.userService.updateUser(this.user).subscribe((reponse)=>{}
+    ,error=>{console.log(error)}
+    ,()=>{
+    this.router.navigateByUrl("/members");
+    });
     this.toastr.success("your info has been updated Successfuly...");
   }  
+
+  photoChanged()
+  {
+    var memberIndex =this.userService.usersResponse.data.findIndex(x => x.userName == this.userDto.userName);
+    this.user = this.userService.usersResponse.data[memberIndex];
+  }
 
 }

@@ -66,6 +66,7 @@ namespace Starware.DatingApp.Application.Services
             response.Data.UserName = user.UserName;
             response.Data.Age = user.BirthDate.GetAgeFromDate();
             response.Data.Name = $"{user.FirstName } {user.MiddleName} {user.LastName}";
+            response.Data.PhotoUrl = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url;
             response.Data.Token = this.tokenService.CreateToken(user);
             return response;
         }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApiResponse } from 'src/app/models/common/ApiResponse';
 import { MemberDto } from 'src/app/models/users/MemberDto';
 import { UsersService } from 'src/app/services/users.service';
 
@@ -9,19 +11,12 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class MemberListComponent implements OnInit {
 
-  systemUsers:MemberDto[]=[];
+  $systemUsers: Observable<ApiResponse<MemberDto[]>>;
 
   constructor(private userService:UsersService) { }
 
   ngOnInit(): void {
-    this.getAllUsers();
+    
+    this.$systemUsers = this.userService.getAllUsers();
   }
-  getAllUsers()
-  {
-    this.userService.getAllUsers().subscribe((appUsers)=>
-    {
-      this.systemUsers = appUsers.data ;
-    });
-  }
-
 }

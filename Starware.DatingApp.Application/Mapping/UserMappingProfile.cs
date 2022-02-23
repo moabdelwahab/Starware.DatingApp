@@ -11,7 +11,7 @@ namespace Starware.DatingApp.Application.Mapping
             CreateMap<AppUser, UserDto>();
             CreateMap<AppUser, MemberDto>().ForMember(dest => dest.PhotoUrl ,
                 opt=>opt.MapFrom(source => source.Photos.FirstOrDefault(p => p.IsMain).Url ));
-           CreateMap<Photo, PhotoDto>();
+           CreateMap<Photo, PhotoDto>().ReverseMap();
             CreateMap<MemberDto, AppUser>()
                  .ForMember(dest => dest.BirthDate, options => options.Ignore())
                  .ForMember(dest => dest.Photos, options => options.Ignore())

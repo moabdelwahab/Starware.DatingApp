@@ -1,4 +1,5 @@
-﻿using Starware.DatingApp.Core.Domains;
+﻿using Microsoft.AspNetCore.Http;
+using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Core.DTOs;
 using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.SharedKernal.Common;
@@ -18,5 +19,8 @@ namespace Starware.DatingApp.Core.ServiceContracts
         Task<ApiResponse<MemberDto>> GetMemberByUsername(string username);
         Task<ApiResponse<AppUser>> GetByUsername(string username);
         Task<ApiResponse<bool>> UpdateUser(MemberDto user);
+        Task<ApiResponse<PhotoDto>> AddPhoto(IFormFile file, string username);
+        Task<ApiResponse<bool>> DeletePhoto(string username , string publicId);
+        Task<ApiResponse<bool>> SetMainPhoto(string username, int Id);
     }
 }

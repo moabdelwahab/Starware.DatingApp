@@ -25,6 +25,10 @@ namespace Starware.DatingApp.Infrastructure
             {
                 new Claim(JwtRegisteredClaimNames.NameId , appUser.UserName),
                 new Claim(JwtRegisteredClaimNames.Birthdate , appUser.BirthDate.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name , appUser.FirstName +' '+ appUser.MiddleName + ' '+ appUser.LastName ),
+                new Claim(JwtRegisteredClaimNames.Email,"Mohamed.abdelwhab@Linkdev.com" ),
+                new Claim(JwtRegisteredClaimNames.Gender, appUser.Gender),
+
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

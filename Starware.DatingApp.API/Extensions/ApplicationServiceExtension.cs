@@ -5,6 +5,7 @@ using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.PersistenceContracts;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.Infrastructure;
+using Starware.DatingApp.Infrastructure.Models;
 using Starware.DatingApp.Persistence;
 using Starware.DatingApp.Persistence.Repositories;
 
@@ -19,7 +20,11 @@ namespace Starware.DatingApp.API.Extensions
                 options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddScoped<IPhotoService, PhotoService>();
+            
             services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
+
+            services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -6,7 +6,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery'; 
-
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { AngularFileUploaderModule } from "angular-file-uploader";
 
 
 @NgModule({
@@ -19,9 +20,16 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
     }) ,
     TabsModule.forRoot() ,
     ModalModule.forRoot() ,
-    NgxGalleryModule
+    NgxGalleryModule,
+    AngularFileUploaderModule
   ],
-  exports:[BsDropdownModule,BsDatepickerModule,
-    ToastrModule,TabsModule,ModalModule,NgxGalleryModule]
+  exports:[BsDropdownModule,
+    BsDatepickerModule,
+    ToastrModule,
+    TabsModule,
+    ModalModule,
+    NgxGalleryModule,
+    AngularFileUploaderModule
+  ]
 })
 export class SharedModule { }

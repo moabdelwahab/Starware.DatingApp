@@ -4,5 +4,6 @@ export class UserDto {
     name: string;
     age: number;
     token: string;
+    photoUrl:string;
     
 }

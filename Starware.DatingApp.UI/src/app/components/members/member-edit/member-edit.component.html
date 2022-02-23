@@ -42,7 +42,7 @@
                     </form>
                 </tab>
                 <tab heading="Photos">
-                    photos edit will be here
+                    <app-photo-editor (photoChanged)="photoChanged()" [member]="user"></app-photo-editor>
                 </tab>
             </tabset>
         </div>

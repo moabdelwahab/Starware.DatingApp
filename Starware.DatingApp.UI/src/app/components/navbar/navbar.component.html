@@ -4,12 +4,6 @@
     <a class="navbar-brand" disabled>Dating App</a>
 
     <ul *ngIf="loggedIn" class="navbar-nav mr-auto">
-
-      <li class="nav-item ">
-        <a class="nav-link" routerLink="error" routerLinkActive='active'>error <span
-            class="sr-only">(current)</span></a>
-      </li>
-
       <li class="nav-item ">
         <a class="nav-link" routerLink="members" routerLinkActive='active'>Matches <span
             class="sr-only">(current)</span></a>
@@ -24,12 +18,20 @@
         <a class="nav-link" routerLink="messages" routerLinkActive='active'>Messages<span
             class="sr-only">(current)</span></a>
       </li>
+
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="error" routerLinkActive='active'>error <span
+            class="sr-only">(current)</span></a>
+      </li>
+
     </ul>
 
-    <div *ngIf="loggedIn" class="btn-group" dropdown>
-      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
-        aria-controls="dropdown-basic">Welcome {{ (this.accountService.$currentUser | async).userName }} <span
-          class="caret"></span>
+    <div *ngIf="loggedIn" class="btn-group" dropdown> 
+      <button id="button-basic" dropdownToggle type="button" class="btn dropdown-toggle"
+        aria-controls="dropdown-basic">
+          <img src="{{(this.accountService.$currentUser | async).photoUrl}}" alt="" class="rounded-circle profile-img">
+        Welcome {{ (this.accountService.$currentUser | async).userName }} 
+        <i class="bi bi-apple"></i>
       </button>
       <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
         <li role="menuitem"><a routerLink="/member/edit" class="dropdown-item" href="#">Edit Profile</a></li>
@@ -57,9 +59,9 @@
         </button>
       </div>
       <div class="modal-body">
-       <p class="text-center">
-        {{this.loginErrorMessage}}
-       </p> 
+        <p class="text-center">
+          {{this.loginErrorMessage}}
+        </p>
       </div>
     </ng-template>
 

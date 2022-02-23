@@ -1,5 +1,5 @@
 <div class="container mt-2">
     <div class="row">
-            <app-member-card class="col-2" *ngFor="let user of systemUsers" [user]="user"></app-member-card>
+            <app-member-card class="col-2 col-sm-12 col-md-6 col-lg-2" *ngFor="let user of ($systemUsers | async)?.data" [user]="user"></app-member-card>
     </div>
 </div>

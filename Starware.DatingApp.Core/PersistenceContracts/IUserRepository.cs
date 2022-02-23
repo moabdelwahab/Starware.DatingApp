@@ -9,8 +9,8 @@ namespace Starware.DatingApp.Core.PersistenceContracts
 {
     public interface IUserRepository : IRepository<AppUser>
     {
-        Task<AppUser> GetByUserName(string userName);
         Task<IEnumerable<AppUser>> GetUsersWithData();
+        Task<AppUser> GetByUserName(string userName);
 
     }
 }
