@@ -23,7 +23,11 @@ namespace Starware.DatingApp.Core.ServiceContracts
         Task<ApiResponse<PhotoDto>> AddPhoto(IFormFile file, string username);
         Task<ApiResponse<bool>> DeletePhoto(string username , string publicId);
         Task<ApiResponse<bool>> SetMainPhoto(string username, int Id);
-
         Task<ApiResponse<DateTime>> LogUserActivity(string username);
+        Task<ApiResponse<PagedList<LikeDto>>> GetUserLikes(GetLikesRequest getLikesRequest);
+        Task<ApiResponse<bool>> AddUserLike(string username, int LikedUserId);
+        Task<ApiResponse<AppUser>> GetUserWithLikes(int userId);
+        Task<ApiResponse<bool>> DeleteLike(string username,int DeleteLikedUserId);
+
     }
 }

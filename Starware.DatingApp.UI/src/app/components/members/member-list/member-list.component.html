@@ -14,6 +14,9 @@
         </div>
         <button type="button" (click)="getMembers(pagination.PageNumber)"
             class="btn btn-outline-primary ml-2">Search</button>
+            
+        <button type="button" (click)="resetMemberSearch()"
+        class="btn btn-outline-danger ml-2">Reset</button>
         <div class="btn-group ml-5">
             <label name="created" class="btn btn-outline-success" (click)="getMembers(pagination.PageNumber)" [(ngModel)]="memberSearch.OrderBy"
                    btnRadio="Created" tabindex="0" role="button" >Newest Members</label>

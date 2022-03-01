@@ -22,7 +22,7 @@ namespace Starware.DatingApp.Persistence.Repositories
 
         public async Task<AppUser> GetByUserName(string userName)
         {
-            return await context.Users.Include(u => u.Photos).Where(x => x.UserName.ToLower() == userName.ToLower()).FirstOrDefaultAsync();
+            return await context.Users.Include(u => u.Photos).Include(u => u.UserLikes).Where(x => x.UserName.ToLower() == userName.ToLower()).FirstOrDefaultAsync();
         }
 
         public async Task<PagedList<MemberDto>> GetUsersWithData(GetAllUsersRequest getAllUsersRequest)

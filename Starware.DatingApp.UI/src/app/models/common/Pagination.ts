@@ -1,8 +1,8 @@
 export class Pagination{
     TotalCount : number ;
     TotalPages : number ;
-    PageSize : number ;
-    PageNumber : number ;
+    PageSize : number = 10;
+    PageNumber : number = 1;
 }
 
 

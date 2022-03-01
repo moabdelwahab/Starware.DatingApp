@@ -15,15 +15,17 @@ import { UsersService } from 'src/app/services/users.service';
 export class MemberListComponent implements OnInit {
 
   pageSize: number = 10;
-  memberSearch : memberSearch = new memberSearch();
+  memberSearch : memberSearch;
   userResult: ApiResponse<MemberDto[]>;
   pagination: Pagination;
 
-  constructor(private userService: UsersService) { }
+  constructor(private userService: UsersService) { 
+    this.memberSearch = this.userService.getMemberSearch();
+  }
 
   ngOnInit(): void {
 
-    this.userService.getAllUsers( this.memberSearch ,1, this.pageSize).subscribe(
+    this.userService.getAllUsers(1, this.pageSize).subscribe(
       (res) => {
         this.userResult = res.result;
         this.pagination = res.pagination;
@@ -36,11 +38,20 @@ export class MemberListComponent implements OnInit {
   }
 
   getMembers(currentPage: number) {
-    this.userService.getAllUsers( this.memberSearch, currentPage, this.pageSize).subscribe(
+    this.userService.setMemberSearch(this.memberSearch);
+    this.userService.getAllUsers(currentPage, this.pageSize).subscribe(
       (res) => {
         this.pagination = res.pagination;
         this.userResult = res.result;
       }
     );
   }
+
+  resetMemberSearch()
+  {
+    this.memberSearch = new memberSearch();
+    this.userService.resetMemberSearch();
+    this.getMembers(1);
+  }
+
 }

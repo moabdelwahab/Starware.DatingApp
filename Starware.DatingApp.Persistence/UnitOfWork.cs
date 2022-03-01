@@ -16,7 +16,8 @@ namespace Starware.DatingApp.Persistence
         private readonly DatingAppContext context;
         private readonly IMapper mapper;
         private IUserRepository userRepository;
-        
+        private ILikeRepository likeRepository;
+
         public UnitOfWork(DatingAppContext context ,IMapper mapper)
         {
             this.context = context;
@@ -31,6 +32,17 @@ namespace Starware.DatingApp.Persistence
                     this.userRepository = new UserRepository(context, mapper);
                 }
                 return this.userRepository;
+            }
+        }
+        public ILikeRepository LikeRepository
+        {
+            get
+            {
+                if (this.likeRepository == null)
+                {
+                    this.likeRepository = new LikeRepository(context);
+                }
+                return this.likeRepository;
             }
         }
     }

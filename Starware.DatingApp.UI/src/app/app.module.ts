@@ -27,6 +27,7 @@ import { MemberEditComponent } from './components/members/member-edit/member-edi
 import { PhotoEditorComponent } from './components/members/member-edit/photo-editor/photo-editor.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { LikeCardComponent } from './components/lists/like-card/like-card.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
     MemberDetailComponent,
     MemberEditComponent,
     PhotoEditorComponent,
-    TextInputComponent
+    TextInputComponent,
+    LikeCardComponent
   ],
   imports: [
     BrowserModule,

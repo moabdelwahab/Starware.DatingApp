@@ -28,7 +28,9 @@ namespace Starware.DatingApp.API.Controllers
         public async Task<ActionResult<ApiResponse<List<MemberDto>>>> GetAllUsers([FromQuery]GetAllUsersRequest getAllUsersRequest)
         {
             var username = User.GetUserName();
+
             var user = await this.userService.GetMemberByUsername(username);
+
             if(user.Data.Gender.ToLower() == "male")
             {
                 getAllUsersRequest.Gender = "female";

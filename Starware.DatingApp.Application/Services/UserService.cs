@@ -161,5 +161,55 @@ namespace Starware.DatingApp.Application.Services
             response.Data =  await unitOfWork.UserRepository.LogUserActivity(username);
             return response;
         }
+
+        public async Task<ApiResponse<PagedList<LikeDto>>> GetUserLikes(GetLikesRequest getLikesRequest)
+        {
+            var response = new ApiResponse<PagedList<LikeDto>>();
+
+            response.Data = await unitOfWork.LikeRepository.GetLikes(getLikesRequest);
+
+            return response;
+        }
+
+        public async Task<ApiResponse<bool>> AddUserLike(string username, int LikedUserId)
+        {
+            var response = new ApiResponse<bool>();
+            var user = await this.unitOfWork.UserRepository.GetByUserName(username);
+            bool isLikeExist = await this.unitOfWork.LikeRepository.GetLike(user.Id, LikedUserId) != null ;
+            if (isLikeExist)
+            {
+                response.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                response.Message= "you have already liked this user";
+                return response;
+            }
+            var like = new Like()
+            {
+                LikedUserId = LikedUserId,
+                SourceUserId = user.Id
+            };
+
+            user.UserLikes.Add(like);
+            response.Data = await unitOfWork.UserRepository.Update(user) > 0;
+            return response;
+        }
+
+        public async Task<ApiResponse<AppUser>> GetUserWithLikes(int userId)
+        {
+            var response = new ApiResponse<AppUser>();
+
+            response.Data = await this.unitOfWork.LikeRepository.GetUserWithLikes(userId);
+            
+            return response;
+        }
+
+        public async Task<ApiResponse<bool>> DeleteLike(string username,int DeleteLikedUserId)
+        {
+            var response = new ApiResponse<bool>();
+            var user =await unitOfWork.UserRepository.GetByUserName(username);
+            var likeToDelete = user.UserLikes.Where(like => like.LikedUserId == DeleteLikedUserId).FirstOrDefault();
+            user.UserLikes.Remove(likeToDelete);
+         response.Data = await unitOfWork.UserRepository.Update(user) > 0;
+            return response;
+        }
     }
 }

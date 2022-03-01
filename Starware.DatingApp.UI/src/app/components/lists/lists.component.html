@@ -1,1 +1,22 @@
-<h1>lists works</h1>
+<div class="container">
+        <form action="" class="form-inline mb-4 d-flex justify-content-center">
+            <div class="btn-group ml-5">
+                <label #userLikesBtn name="likesOrLikedBy" class="btn btn-outline-success" (click)="getLikes()"
+                       btnRadio="Likes" tabindex="0"  [(ngModel)]="predicate" role="button" >My Likes</label>
+                <label (click)="getLikes()" name="likesOrLikedBy" class="btn btn-outline-success"
+                       btnRadio="LikedBy" tabindex="0" [(ngModel)]="predicate" role="button">Who Likes Me</label>
+              </div>
+        </form>
+    <div class="row">
+        <app-like-card class="col-2" (likeRemoved)="likeRemoved($event)" *ngFor="let like of userLikes" [like]="like" >
+        </app-like-card>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <pagination *ngIf="this.userLikes?.length" [boundaryLinks]="true" [totalItems]="pagination.TotalCount"
+            [(ngModel)]="pagination.PageNumber" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+            nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+    </div>
+
+</div>

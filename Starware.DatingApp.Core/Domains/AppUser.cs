@@ -4,6 +4,12 @@ namespace Starware.DatingApp.Core.Domains
 {
     public class AppUser : Entity
     {
+        public AppUser()
+        {
+            LikedByUsers = new List<Like>();
+            UserLikes = new List<Like>();
+
+        }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
@@ -21,6 +27,9 @@ namespace Starware.DatingApp.Core.Domains
         public DateTime LastActive { get; set; }
 
         public ICollection<Photo> Photos { get; set; }
+        public ICollection<Like> LikedByUsers { get; set; }
+        public ICollection<Like> UserLikes { get; set; }
+
 
         public int GetAge()
         {

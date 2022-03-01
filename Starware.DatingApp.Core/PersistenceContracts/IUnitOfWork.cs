@@ -9,6 +9,7 @@ namespace Starware.DatingApp.Core.PersistenceContracts
     public interface IUnitOfWork
     {
         public IUserRepository UserRepository { get; }
+        public ILikeRepository LikeRepository { get; }
 
     }
 }

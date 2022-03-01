@@ -6,45 +6,47 @@ import { environment } from 'src/environments/environment';
 import { HttpStatusCode } from '../common/StatusCode';
 import { MemberEditComponent } from '../components/members/member-edit/member-edit.component';
 import { ApiResponse } from '../models/common/ApiResponse';
-import { PaginatedResult } from '../models/common/Pagination';
+import { PaginatedResult, Pagination } from '../models/common/Pagination';
+import { LikeDto } from '../models/users/LikeDto';
 import { MemberDto } from '../models/users/MemberDto';
 import { memberSearch } from '../models/users/memberSearch';
 import { PhotoDto } from '../models/users/photoDto';
 import { AccountService } from './account.service';
 
 const apiUrl: string = environment.apiRoot + 'Users/';
+const likesApiUrl: string = environment.apiRoot + 'Like/';
+
 
 @Injectable({
   providedIn: 'any'
 })
 
 export class UsersService {
+  resetMemberSearch() {
+    this.memberSearchParams = new memberSearch();
+  }
 
   memberCashe = new Map();
   usersResponse: ApiResponse<MemberDto[]>;
-  memberSearchParams:memberSearch;
+  memberSearchParams: memberSearch;
 
   constructor(private httpClient: HttpClient) {
-  this.memberSearchParams = new memberSearch();
+    this.memberSearchParams = new memberSearch();
   }
 
-  getMemberSearch() : memberSearch
-  {
+  getMemberSearch(): memberSearch {
     return this.memberSearchParams;
   }
 
-  setMemberSearch(memberSearch :memberSearch)
-  {
+  setMemberSearch(memberSearch: memberSearch) {
     this.memberSearchParams = memberSearch;
   }
 
-  getAllUsers(memberSearch: memberSearch, page?: number, pageSize?: number): Observable<PaginatedResult<ApiResponse<MemberDto[]>>> {
+  getAllUsers(page?: number, pageSize?: number): Observable<PaginatedResult<ApiResponse<MemberDto[]>>> {
 
-
-
-    if (memberSearch) {
-      if (this.memberCashe.get(Object.values(memberSearch).join('-'))) {
-        return of(this.memberCashe.get(Object.values(memberSearch).join('-')));
+    if (this.memberSearchParams) {
+      if (this.memberCashe.get(Object.values(this.memberSearchParams).join('-') + '-' + page)) {
+        return of(this.memberCashe.get(Object.values(this.memberSearchParams).join('-') + '-' + page));
       }
     }
 
@@ -54,11 +56,11 @@ export class UsersService {
       params = params.set('PageSize', pageSize.toString()).set('PageNumber', page.toString());
     }
 
-    if (memberSearch) {
-      params = params.set('Name', memberSearch.name)
-        .set('FromAge', memberSearch.fromAge.toString())
-        .set('ToAge', memberSearch.toAge.toString())
-        .set('OrderBy', memberSearch.OrderBy);
+    if (this.memberSearchParams) {
+      params = params.set('Name', this.memberSearchParams.name)
+        .set('FromAge', this.memberSearchParams.fromAge.toString())
+        .set('ToAge', this.memberSearchParams.toAge.toString())
+        .set('OrderBy', this.memberSearchParams.OrderBy);
     }
 
     return this.httpClient.get<ApiResponse<MemberDto[]>>(apiUrl + 'GetAll', { observe: 'response', params: params })
@@ -70,7 +72,7 @@ export class UsersService {
           if (response.headers.get('Pagination')) {
             paginatingResult.pagination = JSON.parse(response.headers.get('Pagination'));
           }
-          this.memberCashe.set(Object.values(memberSearch).join('-'), paginatingResult)
+          this.memberCashe.set(Object.values(this.memberSearchParams).join('-') + '-' + page, paginatingResult)
           console.log(this.memberCashe);
           return paginatingResult;
 
@@ -82,10 +84,10 @@ export class UsersService {
   getUserByUsername(username: string): Observable<ApiResponse<MemberDto>> {
 
     const member = [...this.memberCashe.values()]
-      .reduce((arr, elem) => arr.concat(elem.result.data), []).find((member:MemberDto) =>
+      .reduce((arr, elem) => arr.concat(elem.result.data), []).find((member: MemberDto) =>
         member.userName.toLowerCase() === username.toLocaleLowerCase());
-      
-      console.log(member);
+
+    console.log(member);
     let response = new ApiResponse<MemberDto>();
     if (member) {
       response.data = member;
@@ -118,5 +120,38 @@ export class UsersService {
 
   setMainPhoto(photoId: number): Observable<ApiResponse<boolean>> {
     return this.httpClient.put<ApiResponse<boolean>>(apiUrl + 'set-main-photo/' + photoId, null);
+  }
+
+  addUserLike(id: number): Observable<ApiResponse<boolean>> {
+    return this.httpClient.post<ApiResponse<boolean>>(likesApiUrl + 'add-user-like', id);
+  }
+
+  getikes(pagination: Pagination,predicate:string): Observable<PaginatedResult<ApiResponse<LikeDto[]>>> {
+    var params = new HttpParams();
+
+    params = params.set('PageNumber', pagination.PageNumber.toString())
+      .set('PageSize', pagination.PageSize.toString())
+      .set('Predicate', predicate);
+
+    return this.httpClient.get<ApiResponse<LikeDto[]>>(likesApiUrl + "get-user-likes", { observe: 'response', params: params })
+      .pipe(
+        map((response) => {
+
+          let likesPaginationResult = new PaginatedResult<ApiResponse<LikeDto[]>>();
+
+          likesPaginationResult.pagination = JSON.parse(response.headers.get('Pagination'));
+
+          likesPaginationResult.result = response.body;
+
+          return likesPaginationResult;
+        })
+      );
+  }
+
+  deleteLike(likeUserId: number) {
+    var params = new HttpParams();
+    params = params.set('likeUserId', likeUserId.toString());
+
+    return this.httpClient.delete(likesApiUrl + 'delete-like', { params: params });
   }
 }
