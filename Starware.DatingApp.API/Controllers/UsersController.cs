@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Starware.DatingApp.API.Extensions;
 using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.Core.InfrastructureContracts;
+using Starware.DatingApp.Core.Requests;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.SharedKernal.Common;
 using System.Security.Claims;
@@ -23,9 +25,26 @@ namespace Starware.DatingApp.API.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetAllUsers()
+        public async Task<ActionResult<ApiResponse<List<MemberDto>>>> GetAllUsers([FromQuery]GetAllUsersRequest getAllUsersRequest)
         {
-            return Ok(await this.userService.GetAllUser());
+            var username = User.GetUserName();
+            var user = await this.userService.GetMemberByUsername(username);
+            if(user.Data.Gender.ToLower() == "male")
+            {
+                getAllUsersRequest.Gender = "female";
+            }else
+            {
+                getAllUsersRequest.Gender = "male";
+            }
+            var usersReponse = await this.userService.GetAllUser(getAllUsersRequest);
+
+            Response.AddPaginationHeader(usersReponse.Data.TotalPages, usersReponse.Data.TotalCount, usersReponse.Data.PageSize, usersReponse.Data.CurrentPage);
+            return Ok(new ApiResponse<List<MemberDto>>()
+            {
+                Data = usersReponse.Data.ToList(),
+                StatusCode = System.Net.HttpStatusCode.OK,
+                Message= ""
+            });
         }
 
         [HttpGet]

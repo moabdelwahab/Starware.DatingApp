@@ -27,11 +27,8 @@ export class MemberDetailComponent implements OnInit {
 
   getUserByUsername()
   {
-    console.log(this.route.snapshot.paramMap.get('username'));
     this.userService.getUserByUsername(this.route.snapshot.paramMap.get('username')).subscribe((data)=>{
-      
       this.user = data.data;
-
       if(this.user)
       {
         for (let i = 0; i < this.user.photos.length; i++) {

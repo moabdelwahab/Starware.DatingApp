@@ -4,6 +4,7 @@ using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.PersistenceContracts;
+using Starware.DatingApp.Core.Requests;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.Persistence;
 using Starware.DatingApp.SharedKernal.Common;
@@ -41,14 +42,12 @@ namespace Starware.DatingApp.Application.Services
             return response;
         }
 
-        public async Task<ApiResponse<IEnumerable<MemberDto>>> GetAllUser()
+        public async Task<ApiResponse<PagedList<MemberDto>>> GetAllUser(GetAllUsersRequest getAllUsersRequest)
         {
-            var response = new ApiResponse<IEnumerable<MemberDto>>();
+            var response = new ApiResponse<PagedList<MemberDto>>();
 
-            var users = await unitOfWork.UserRepository.GetUsersWithData();
+            response.Data = await unitOfWork.UserRepository.GetUsersWithData(getAllUsersRequest);
             
-            response.Data = mapper.Map<List<MemberDto>>(users);
-
             return response;
         }
 
@@ -70,6 +69,7 @@ namespace Starware.DatingApp.Application.Services
             return response;
 
         }
+
         public async Task<ApiResponse<AppUser>> GetByUsername(string username)
         {
             var reponse = new ApiResponse<AppUser>();
@@ -152,6 +152,13 @@ namespace Starware.DatingApp.Application.Services
 
                 response.Data = updateResponse > 0;
             }
+            return response;
+        }
+
+        public async Task<ApiResponse<DateTime>> LogUserActivity(string username)
+        {
+            var response = new ApiResponse<DateTime>();
+            response.Data =  await unitOfWork.UserRepository.LogUserActivity(username);
             return response;
         }
     }

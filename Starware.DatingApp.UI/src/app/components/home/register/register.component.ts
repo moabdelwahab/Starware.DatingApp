@@ -31,14 +31,16 @@ export class RegisterComponent implements OnInit{
   intializeForm() {
     this.registerForm =new FormGroup({
       firstName : new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(10)]),
-      userName : new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(10)]),
       middleName: new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(10)]),
       lastName: new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(10)]),
+      userName : new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(10)]),
       birthdate: new FormControl('',[Validators.required]),
       password: new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(10)]),
       confirmPassword : new FormControl('',[Validators.required,this.matchValues('password')]),
+      interests : new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(150)]),
+      lookingFor : new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(150)]),
+      introduction : new FormControl('',[Validators.required,Validators.minLength(5),Validators.maxLength(150)])
     });
-    console.log(this.registerForm.valid);
   }
 
   matchValues(matchTo:string) : ValidatorFn

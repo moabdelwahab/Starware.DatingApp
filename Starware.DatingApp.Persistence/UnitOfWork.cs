@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Core.PersistenceContracts;
 using Starware.DatingApp.Persistence.Repositories;
@@ -13,11 +14,13 @@ namespace Starware.DatingApp.Persistence
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DatingAppContext context;
+        private readonly IMapper mapper;
         private IUserRepository userRepository;
         
-        public UnitOfWork(DatingAppContext context)
+        public UnitOfWork(DatingAppContext context ,IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         public IUserRepository UserRepository {
@@ -25,7 +28,7 @@ namespace Starware.DatingApp.Persistence
             {
                 if(this.userRepository == null)
                 {
-                    this.userRepository = new UserRepository(context);
+                    this.userRepository = new UserRepository(context, mapper);
                 }
                 return this.userRepository;
             }

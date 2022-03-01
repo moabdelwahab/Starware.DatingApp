@@ -1,33 +1,19 @@
-<form [formGroup]="registerForm" (ngSubmit)="register()" class="col-9" autocomplete="off">
-    <h2 class="text-center text-primary mb-4">Sign Up</h2>
-
-    <div class="row justify-content-center">
-        <div class="form-group col-3">
-            <label for="fisrtname">First Name</label>
-            <input id="fisrtname"
-                [class.is-invalid]='registerForm.get("firstName").errors && (registerForm.get("firstName").touched || isSubmitted)'
-                formControlName="firstName" type="text" class="form-control" placeholder="First Name">
-            <div class="invalid-feedback" *ngIf="registerForm.get('firstName').hasError('required')">
-                First name is required
-            </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('firstName').hasError('minlength')">
-                First name must be at least 5 charcters
-            </div>
-            <div class="invalid-feedback" *ngIf="registerForm.get('firstName').hasError('maxlength')">
-                First name must be at most 25 charcters
-            </div>
+<form class="row" [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+    <h2 class="text-center text-primary col-12">Sign Up</h2>
+    <div class="col-8">
+        <div class="form-group col-8">
+            <app-text-input [formControl]="registerForm.controls['firstName']" [isSubmitted]="isSubmitted"
+                [label]="'First name'"></app-text-input>
         </div>
-        <div class="form-group col-3">
-            <label>Middle Name</label>
-            <input type="text" name="middleName" formControlName="middleName" required class="form-control"
-                placeholder="Middle Name">
+        <div class=" form-group col-8">
+            <app-text-input [formControl]="registerForm.controls['middleName']" [isSubmitted]="isSubmitted"
+                [label]="'Middle name'"></app-text-input>
         </div>
-        <div class="form-group col-3">
-            <label>Last Name</label>
-            <input type="text" name="lastName" formControlName="lastName" required class="form-control"
-                placeholder="Last Name">
+        <div class="form-group col-8">
+            <app-text-input [formControl]="registerForm.controls['lastName']" [isSubmitted]="isSubmitted"
+                [label]="'Last name'"></app-text-input>
         </div>
-        <div class="form-group col-9">
+        <div class="form-group col-8">
             <label for="userNameControl" class="form-label">Username</label>
             <div class="input-group">
                 <span class="input-group-text" id="inputGroupPrepend">@</span>
@@ -35,37 +21,45 @@
                     placeholder="Username">
             </div>
         </div>
-        <div class="form-group col-9">
+        <div class="form-group col-8">
             <label>Birthdate</label>
             <input type="text" required name="birthDate" formControlName="birthdate"
                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD'}" readonly class="form-control" placeholder="Select a date"
                 bsDatepicker>
         </div>
-
-        <div class="form-group col-9">
-            <label>Password</label>
-            <input type="password" name="password" formControlName="password" required class="form-control" 
-            placeholder="Password">
-       
+        <div class="form-group col-8">
+            <app-text-input [formControl]="registerForm.controls['password']" [isSubmitted]="isSubmitted"
+                [label]="'Password'"></app-text-input>
         </div>
-
-        <div class="form-group col-9">
-            <label>Password Match</label>
-            <input
-            [class.is-invalid]="registerForm.get('confirmPassword').errors && (isSubmitted || registerForm.get('confirmPassword').touched)" 
-            type="password" formControlName="confirmPassword" class="form-control" placeholder="Password Match">
-
-            <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('isMatching') && registerForm.get('password').valueChanges">
-                Password is not matching 
-            </div>
+        <div class="form-group col-8">
+            <app-text-input [formControl]="registerForm.controls['confirmPassword']" [isSubmitted]="isSubmitted"
+                [label]="'Confirm Password'"></app-text-input>
         </div>
-
-
-        <div class="form-group col-9 position-relative rtl">
+        <div class="form-group col-8">
+            <label class="form-label">Interests</label>
+            <textarea class="form-control" rows="5" name="interestsControl" id="interestsControl"
+                formControlName="interests"></textarea>
+        </div>
+        <div class="form-group col-8">
+            <label for="lookingForControl" class="form-label">Looking For</label>
+            <textarea rows="5" class="form-control" name="lookingForControl" id="lookingForControl"
+                formControlName="lookingFor"></textarea>
+        </div>
+        <div class="form-group col-8">
+            <label for="introductionControl" class="form-label">Introduction</label>
+            <textarea rows="5" class="form-control" name="introductionControl" id="introductionControl"
+                formControlName="introduction"></textarea>
+        </div>
+        <div class="form-group col-8 position-relative rtl">
             <button class="btn btn-success btn-lg right-0" [disabled]="!registerForm.valid && isSubmitted"
                 type="submit">Register</button>
             <button class="btn btn-danger btn-lg ml-2" (click)="cancel()" type="button">Cancel</button>
         </div>
     </div>
-    <h1>{{registerForm.value | json }}</h1>
+    <div class="col-4">
+        <div class="form-group">
+            <img src='/src/assets/images/user.png' alt="">
+        </div>
+    </div>
+    <h1>{{ registerForm.value | json }}</h1>
 </form>

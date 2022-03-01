@@ -5,5 +5,5 @@ export class UserDto {
     age: number;
     token: string;
     photoUrl:string;
-    
+    lastActive:Date ;
 }

@@ -22,6 +22,7 @@ namespace Starware.DatingApp.Core.DTOs.Users
         public string City { get; set; }
         public string Country { get; set; }
         public string PhotoUrl { get; set; }
+        public DateTime LastActive { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
     }
 }

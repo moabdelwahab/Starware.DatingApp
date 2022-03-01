@@ -1,1 +1,51 @@
-<p>text-input works!</p>
+    <label  class="form-label">{{label}}</label>
+    <input 
+        [class.is-invalid]='(ngControl.touched || isSubmitted) && ngControl.invalid'
+        [formControl]="ngControl.control"  
+        type="{{type}}"
+         class="form-control"
+        placeholder="{{label}}">
+    <div class="invalid-feedback" *ngIf="ngControl.hasError('required')">
+        {{label}} is required
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.control?.errors?.minlength && (ngControl.touched ||isSubmitted) ">
+        {{label}} must be at least {{ngControl.control?.errors?.minlength['requiredLength']}} charcters
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.control.errors.maxlength && (ngControl.touched ||isSubmitted) ">
+        {{label}} must be at most {{ngControl.control?.errors?.maxlength['requiredLength']}} charcters
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.hasError('isMatching') && (ngControl.touched ||isSubmitted) ">
+        password is not match
+    </div>
+<!-- 
+<ng-container *ngIf="type=='date'">
+    <label>{{label}}</label>
+    <input name="{{label}}"  type="text" required name="birthDate" [formControl]="ngControl"
+        [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD'}" readonly class="form-control" placeholder="Select a date"
+        bsDatepicker>
+        <div class="invalid-feedback" *ngIf="ngControl.hasError('required')">
+            {{label}} is required
+        </div>
+</ng-container>
+
+<ng-container *ngIf="type=='username'">
+    
+    <label for="userNameControl" class="form-label">Username</label>
+    <div class="input-group">
+        <span class="input-group-text" id="inputGroupPrepend">@</span>
+        <input name="{{label}}"  type="text" id="userNameControl" name="userName" [formControl]="ngControl" class="form-control"
+            placeholder="Username">
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.hasError('required')">
+        {{label}} is required
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.hasError('minlength') && (ngControl.touched ||isSubmitted) ">
+        {{label}} must be at least {{ngControl.control.errors.maxlength['requiredLength']}} charcters
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.hasError('maxlength') && (ngControl.touched ||isSubmitted) ">
+        {{label}} must be at most {{ngControl.control.errors.maxlength['requiredLength']}} charcters
+    </div>
+    <div class="invalid-feedback" *ngIf="ngControl.hasError('isMatching') && (ngControl.touched ||isSubmitted) ">
+        password is not match
+    </div>
+</ng-container> -->

@@ -16,15 +16,17 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ServerErrorComponent } from './components/server-error/server-error.component';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ListsComponent } from './components/lists/lists.component';
-import { MemberCardComponent } from './components/members/member-list/member-card/member-card.component';
+import { MemberCardComponent } from './components/members/member-card/member-card.component';
 import { MemberListComponent } from './components/members/member-list/member-list.component';
 import { MemberDetailComponent } from './components/members/member-detail/member-detail.component';
 import { UsersService } from './services/users.service';
-import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { PhotoEditorComponent } from './components/members/member-edit/photo-editor/photo-editor.component';
 import { TextInputComponent } from './components/forms/text-input/text-input.component';
+import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
+import { PhotoEditorComponent } from './components/members/member-edit/photo-editor/photo-editor.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 
 @NgModule({
@@ -52,7 +54,7 @@ import { TextInputComponent } from './components/forms/text-input/text-input.com
     FormsModule,
     SharedModule,
     NgxSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
 ],
   providers: [
               {provide : HTTP_INTERCEPTORS , useClass : ErrorInterceptor , multi: true},

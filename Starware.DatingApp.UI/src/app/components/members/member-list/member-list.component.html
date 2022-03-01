@@ -1,5 +1,36 @@
 <div class="container mt-2">
-    <div class="row">
-            <app-member-card class="col-2 col-sm-12 col-md-6 col-lg-2" *ngFor="let user of ($systemUsers | async)?.data" [user]="user"></app-member-card>
-    </div>
+    <form action="" class="form-inline mb-4 d-flex justify-content-center">
+        <div class="form-group">
+            <label for="" class="control-label px-2">Name</label>
+            <input type="text" [(ngModel)]="memberSearch.name" name="nameSearchBox" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="" class="control-label px-2">From Age </label>
+            <input min="19" max="40" [(ngModel)]="memberSearch.fromAge" name="fromAge" value="19" type="number"
+                class="form-control px-2">
+            <label for="" class="control-label px-2">To Age</label>
+            <input min="20" [(ngModel)]="memberSearch.toAge" name="toAge" max="70" type="number"
+                class="form-control px-2">
+        </div>
+        <button type="button" (click)="getMembers(pagination.PageNumber)"
+            class="btn btn-outline-primary ml-2">Search</button>
+        <div class="btn-group ml-5">
+            <label name="created" class="btn btn-outline-success" (click)="getMembers(pagination.PageNumber)" [(ngModel)]="memberSearch.OrderBy"
+                   btnRadio="Created" tabindex="0" role="button" >Newest Members</label>
+            <label (click)="getMembers(pagination.PageNumber)" name="lastActive" class="btn btn-outline-success" [(ngModel)]="memberSearch.OrderBy"
+                   btnRadio="lastActive" tabindex="0" role="button">Last Active</label>
+          </div>
+    </form>
+</div>
+
+<div class="row">
+    <app-member-card class="col-2 col-sm-12 col-md-6 col-lg-2" *ngFor="let user of userResult?.data" [user]="user">
+    </app-member-card>
+</div>
+
+<div class="d-flex justify-content-center">
+    <pagination *ngIf="userResult?.data" [boundaryLinks]="true" [totalItems]="pagination.TotalCount"
+        [(ngModel)]="pagination.PageNumber" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
 </div>

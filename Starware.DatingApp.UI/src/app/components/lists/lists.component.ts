@@ -11,12 +11,10 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class ListsComponent implements OnInit {
 
-  systemUsers:Observable<ApiResponse<MemberDto[]>>;
 
   constructor(private userService:UsersService) { }
 
   ngOnInit(): void {
-    this.systemUsers = this.userService.getAllUsers();
   }
   
 }

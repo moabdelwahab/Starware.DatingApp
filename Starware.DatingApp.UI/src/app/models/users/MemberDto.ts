@@ -12,7 +12,7 @@ export class MemberDto {
     interests: string;
     introduction: string;
     lookingFor: string;
-    lastActive:string;
+    lastActive:Date;
     city: string;
     country: string;
     photoUrl: string;

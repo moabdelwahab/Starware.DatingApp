@@ -23,11 +23,8 @@ namespace Starware.DatingApp.Infrastructure
         {
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId , appUser.UserName),
-                new Claim(JwtRegisteredClaimNames.Birthdate , appUser.BirthDate.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name , appUser.FirstName +' '+ appUser.MiddleName + ' '+ appUser.LastName ),
-                new Claim(JwtRegisteredClaimNames.Email,"Mohamed.abdelwhab@Linkdev.com" ),
-                new Claim(JwtRegisteredClaimNames.Gender, appUser.Gender),
+                new Claim(JwtRegisteredClaimNames.NameId , appUser.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName , appUser.UserName.ToString()),
 
             };
 

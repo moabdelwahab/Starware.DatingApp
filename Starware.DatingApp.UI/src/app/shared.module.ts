@@ -8,6 +8,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery'; 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AngularFileUploaderModule } from "angular-file-uploader";
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TimeagoModule } from 'ngx-timeago';
 
 
 @NgModule({
@@ -21,7 +24,10 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     TabsModule.forRoot() ,
     ModalModule.forRoot() ,
     NgxGalleryModule,
-    AngularFileUploaderModule
+    AngularFileUploaderModule,
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TimeagoModule.forRoot() 
   ],
   exports:[BsDropdownModule,
     BsDatepickerModule,
@@ -29,7 +35,10 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     TabsModule,
     ModalModule,
     NgxGalleryModule,
-    AngularFileUploaderModule
+    AngularFileUploaderModule,
+    PaginationModule,
+    ButtonsModule,
+    TimeagoModule
   ]
 })
 export class SharedModule { }
