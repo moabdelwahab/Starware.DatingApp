@@ -1,45 +1,81 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MemberDto } from 'src/app/models/users/MemberDto';
 import { UsersService } from 'src/app/services/users.service';
-import {NgxGalleryOptions} from '@kolkov/ngx-gallery';
-import {NgxGalleryImage} from '@kolkov/ngx-gallery';
-import {NgxGalleryAnimation} from '@kolkov/ngx-gallery';
+import { NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { NgxGalleryImage } from '@kolkov/ngx-gallery';
+import { NgxGalleryAnimation } from '@kolkov/ngx-gallery';
 import { UserDto } from 'src/app/models/users/UserDto';
+import { MessagesService } from 'src/app/services/messages.service';
+import { AccountService } from 'src/app/services/account.service';
+import { take } from 'rxjs/operators';
+import { Message } from 'src/app/models/users/Message';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
+import { PresenceService } from 'src/app/services/presence.service';
 
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
   styleUrls: ['./member-detail.component.css']
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit, AfterViewInit {
 
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[] = [];
-  user:MemberDto = new MemberDto();
+  user: MemberDto = new MemberDto();
+  messages: Message[] = [];
+  loggedUser: UserDto;
+  @ViewChild('memberTabs') memberTabs: TabsetComponent;
+  selectedTab: TabDirective;
 
-  constructor(private userService:UsersService ,private route :ActivatedRoute) { }
+  constructor(private userService: UsersService,
+    private route: ActivatedRoute,
+    private messageService: MessagesService,
+    private accountService: AccountService,
+    public presenceService: PresenceService) {
 
-  ngOnInit(): void {
-    this.setGalleryOptions();
-    this.getUserByUsername();
   }
 
-  getUserByUsername()
-  {
-    this.userService.getUserByUsername(this.route.snapshot.paramMap.get('username')).subscribe((data)=>{
-      this.user = data.data;
-      if(this.user)
-      {
+  ngAfterViewInit(): void {
+    this.route.queryParams.subscribe(params => {
+      params.tab ? this.selectTab(params.tab) : this.selectTab(0);
+    });
+  }
+
+
+
+  ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.user = data.member.data;
+    }, error => {
+      console.log(error),
+      () => {
         for (let i = 0; i < this.user.photos.length; i++) {
           this.addGelleryImages(this.user.photos[i].url)
         }
       }
-    })
+    });
+
+
+    this.accountService.$currentUser.pipe(take(1)).subscribe(response => {
+      this.loggedUser = response;
+    });
+
+
+    this.setGalleryOptions();
+
   }
 
-  setGalleryOptions()
-  {
+  getUserMessages() {
+    this.messageService.getMessageThread(this.user.userName).subscribe(
+      (response) => {
+        this.messages = response.data;
+        console.log(this.messages);
+      })
+  }
+
+
+  setGalleryOptions() {
     this.galleryOptions = [
       {
         width: '600px',
@@ -65,9 +101,22 @@ export class MemberDetailComponent implements OnInit {
     ];
   }
 
+  messageAdded(e: Message) {
+    this.messages.push(e);
+  }
 
-  addGelleryImages(photoUrl:string)
-  {
+  onTabActivated(data: TabDirective) {
+    this.selectedTab = data;
+    if (this.selectedTab.heading == "Messages") { this.getUserMessages(); }
+  }
+
+  selectTab(index: number) {
+    if (this.memberTabs) {
+      this.memberTabs.tabs[index].active = true;
+    }
+  }
+
+  addGelleryImages(photoUrl: string) {
     this.galleryImages.push({
       small: photoUrl,
       medium: photoUrl,

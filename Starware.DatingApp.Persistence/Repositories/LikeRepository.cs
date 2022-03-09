@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Starware.DatingApp.Persistence.Repositories
 {
-    internal class LikeRepository : ILikeRepository
+    public class LikeRepository : ILikeRepository
     {
         private readonly DatingAppContext context;
 

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Persistence;
 using Starware.DatingApp.Persistence.Data;
 
@@ -20,12 +22,14 @@ namespace API
             var services = scope.ServiceProvider;
             try
             {
-                DatingAppContext context = services.GetRequiredService<DatingAppContext>();
-                
-                if(!context.Users.Any())
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManger = services.GetRequiredService<RoleManager<AppRole>>();
+
+                if (!userManager.Users.Any())
                 {
-                   await SeedData.SeedUsers(context);
+                   await SeedData.SeedUsers(userManager,roleManger);
                 }
+
             }
             catch (Exception ex)
             {

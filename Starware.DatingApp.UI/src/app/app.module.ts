@@ -25,9 +25,14 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { TextInputComponent } from './components/forms/text-input/text-input.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { PhotoEditorComponent } from './components/members/member-edit/photo-editor/photo-editor.component';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { LikeCardComponent } from './components/lists/like-card/like-card.component';
+import { MessagesComponent } from './components/messages/messages.component';
+import { MemberMessagesComponent } from './components/members/member-detail/member-messages/member-messages.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { HasRolesDirective } from './directives/has-roles.directive';
+import { UserManagementComponent } from './components/admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './components/admin/photo-management/photo-management.component';
+import { EditUserRolesModalComponent } from './components/admin/user-management/edit-user-roles-modal/edit-user-roles-modal.component';
 
 
 @NgModule({
@@ -46,7 +51,14 @@ import { LikeCardComponent } from './components/lists/like-card/like-card.compon
     MemberEditComponent,
     PhotoEditorComponent,
     TextInputComponent,
-    LikeCardComponent
+    LikeCardComponent,
+    MessagesComponent,
+    MemberMessagesComponent,
+    AdminComponent,
+    HasRolesDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    EditUserRolesModalComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import { AppUser } from './models/users/AppUser';
 import { MemberDto } from './models/users/MemberDto';
 import { UserDto } from './models/users/UserDto';
 import { AccountService } from './services/account.service';
+import { PresenceService } from './services/presence.service';
 import { UsersService } from './services/users.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
   constructor(private userService: UsersService,
     private accountService: AccountService,
     private router: Router,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private presenceService:PresenceService) {
   }
 
   ngOnInit(): void {
@@ -31,7 +33,7 @@ export class AppComponent implements OnInit {
   setCurrentUser() {
     const user: UserDto = JSON.parse(localStorage.getItem('user'));
     if (user) {
-
+      this.presenceService.createHubConnection(user);
       this.user = user;
       this.accountService.setCurrentUser(user);
       this.loggedIn = !!user;

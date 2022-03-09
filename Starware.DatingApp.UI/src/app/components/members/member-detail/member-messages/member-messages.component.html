@@ -1,0 +1,30 @@
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">Chat</div>
+				<div class="card-body height3">
+					<ul class="chat-list">
+						<li *ngFor="let message of messages"
+							[ngClass]="{'in':message.senderUsername != loggedUser.userName ,'out' : message.senderUsername == loggedUser.userName}">
+							<div class="chat-img">
+								<img alt="Avtar" src="{{message.senderPhotoUrl}}">
+							</div>
+							<div class="chat-body">
+								<div class="chat-message">
+									<h5>{{message.senderUsername}}</h5>
+									<p>{{message.content}}</p>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="input-group">
+				<input type="text" placeholder="Send a message.." [(ngModel)]="message" class="form-control">
+				<div class="input-group-append">
+				<button (click)="sendMessage()" class="btn btn-success"><i class="bi bi-send"></i></button>
+				</div>
+			</div>
+		</div>
+
+	</div>

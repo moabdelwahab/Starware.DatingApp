@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { getPaginatedResult, getPaginationHttpParams } from '../common/PaginationHelper';
 import { HttpStatusCode } from '../common/StatusCode';
 import { MemberEditComponent } from '../components/members/member-edit/member-edit.component';
 import { ApiResponse } from '../models/common/ApiResponse';
@@ -53,7 +54,7 @@ export class UsersService {
     var params = new HttpParams();
 
     if (pageSize !== 0 && page !== 0) {
-      params = params.set('PageSize', pageSize.toString()).set('PageNumber', page.toString());
+      params = getPaginationHttpParams(page, pageSize);
     }
 
     if (this.memberSearchParams) {
@@ -63,21 +64,11 @@ export class UsersService {
         .set('OrderBy', this.memberSearchParams.OrderBy);
     }
 
-    return this.httpClient.get<ApiResponse<MemberDto[]>>(apiUrl + 'GetAll', { observe: 'response', params: params })
-      .pipe(
-        map((response) => {
-
-          let paginatingResult: PaginatedResult<ApiResponse<MemberDto[]>> = new PaginatedResult<ApiResponse<MemberDto[]>>();
-          paginatingResult.result = response.body;
-          if (response.headers.get('Pagination')) {
-            paginatingResult.pagination = JSON.parse(response.headers.get('Pagination'));
-          }
-          this.memberCashe.set(Object.values(this.memberSearchParams).join('-') + '-' + page, paginatingResult)
-          console.log(this.memberCashe);
-          return paginatingResult;
-
-        })
-      );
+    return getPaginatedResult<ApiResponse<MemberDto[]>>(apiUrl + 'GetAll', params, this.httpClient).pipe(
+      map((response) => {
+        this.memberCashe.set(Object.values(this.memberSearchParams).join('-') + '-' + page, response)
+        return response;
+      }));
   }
 
 
@@ -88,12 +79,14 @@ export class UsersService {
         member.userName.toLowerCase() === username.toLocaleLowerCase());
 
     console.log(member);
+
     let response = new ApiResponse<MemberDto>();
     if (member) {
       response.data = member;
       response.statusCode = HttpStatusCode.OK;
       return of(response);
     }
+    
     return this.httpClient.get<ApiResponse<MemberDto>>(apiUrl + 'GetUserByUsername/' + username);
   }
 
@@ -126,7 +119,7 @@ export class UsersService {
     return this.httpClient.post<ApiResponse<boolean>>(likesApiUrl + 'add-user-like', id);
   }
 
-  getikes(pagination: Pagination,predicate:string): Observable<PaginatedResult<ApiResponse<LikeDto[]>>> {
+  getikes(pagination: Pagination, predicate: string): Observable<PaginatedResult<ApiResponse<LikeDto[]>>> {
     var params = new HttpParams();
 
     params = params.set('PageNumber', pagination.PageNumber.toString())
@@ -151,7 +144,7 @@ export class UsersService {
   deleteLike(likeUserId: number) {
     var params = new HttpParams();
     params = params.set('likeUserId', likeUserId.toString());
-
     return this.httpClient.delete(likesApiUrl + 'delete-like', { params: params });
   }
+
 }

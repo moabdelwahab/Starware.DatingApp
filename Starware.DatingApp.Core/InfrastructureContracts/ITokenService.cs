@@ -10,6 +10,6 @@ namespace Starware.DatingApp.Core.InfrastructureContracts
 {
     public interface ITokenService
     {
-        string CreateToken(AppUser appUser);
+        Task<string> CreateToken(AppUser appUser);
     }
 }

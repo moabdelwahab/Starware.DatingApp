@@ -1,15 +1,11 @@
-﻿using Starware.DatingApp.Core.Domains;
+﻿using Microsoft.AspNetCore.Identity;
+using Starware.DatingApp.Core.Domains;
 using Starware.DatingApp.Core.DTOs.Users;
 using Starware.DatingApp.Core.InfrastructureContracts;
 using Starware.DatingApp.Core.ServiceContracts;
 using Starware.DatingApp.SharedKernal.Common;
 using Starware.DatingApp.SharedKernal.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Starware.DatingApp.Application.Services
 {
@@ -17,14 +13,22 @@ namespace Starware.DatingApp.Application.Services
     {
         private readonly IUserService userService;
         private readonly ITokenService tokenService;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
 
         public AccountService(IUserService userService,
-                              ITokenService tokenService
+                              ITokenService tokenService,
+                              UserManager<AppUser> userManager,
+                              SignInManager<AppUser> signInManager
             )
         {
             this.userService = userService;
             this.tokenService = tokenService;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
+
+
         public async Task<ApiResponse<UserDto>> Login(LoginDto loginData)
         {
             var response = new ApiResponse<UserDto>();
@@ -38,36 +42,46 @@ namespace Starware.DatingApp.Application.Services
                 return response;
             }
 
+            //var hmac = new HMACSHA512(user.PasswordSalt);
+
+            //var userLoginPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginData.Password));
+
+            //if (userLoginPassword.Length == user.PasswordHash.Length)
+            //{
+            //    for (int i = 0; i < userLoginPassword.Length; i++)
+            //    {
+            //        if (user.PasswordHash[i] != userLoginPassword[i])
+            //        {
+            //            response.Message = "Password is inccorect !!";
+            //            response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+            //            return response;
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    response.Message = "Password is inccorect !!";
+            //    response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
+            //    return response;
+            //}
+
             var user = getUserResponse.Data;
+            var signIn = await signInManager.CheckPasswordSignInAsync(user, loginData.Password, false);
 
-            var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var userLoginPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginData.Password));
-
-            if (userLoginPassword.Length == user.PasswordHash.Length)
+            if (!signIn.Succeeded)
             {
-                for (int i = 0; i < userLoginPassword.Length; i++)
-                {
-                    if (user.PasswordHash[i] != userLoginPassword[i])
-                    {
-                        response.Message = "Password is inccorect !!";
-                        response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
-                        return response;
-                    }
-                }
-            }
-            else
-            {
-                response.Message = "Password is inccorect !!";
+                response.Data = null;
+                response.Message = "invalid Password";
                 response.StatusCode = System.Net.HttpStatusCode.Unauthorized;
                 return response;
             }
+
             response.Data = new UserDto();
             response.Data.UserName = user.UserName;
             response.Data.Age = user.BirthDate.GetAgeFromDate();
             response.Data.Name = $"{user.FirstName } {user.MiddleName} {user.LastName}";
             response.Data.PhotoUrl = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url;
-            response.Data.Token = this.tokenService.CreateToken(user);
+            response.Data.Token =await  this.tokenService.CreateToken(user);
             return response;
         }
 
@@ -78,27 +92,24 @@ namespace Starware.DatingApp.Application.Services
             var user = new AppUser()
             {
                 UserName = registerData.UserName,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerData.Password)),
-                PasswordSalt = hmac.Key,
+                //PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerData.Password)),
+                //PasswordSalt = hmac.Key,
                 FirstName = registerData.FirstName,
                 MiddleName = registerData.MiddleName,
                 LastName = registerData.LastName,
                 BirthDate = registerData.BirthDate
             };
 
-            var newUserId = await this.userService.AddUser(user);
-            
-            if (newUserId.Data > 0)
+            var newUserId = await userManager.CreateAsync(user);
+
+            var userDto = new UserDto()
             {
-                var userDto = new UserDto()
-                {
-                    UserName = registerData.UserName,
-                    Age = registerData.BirthDate.GetAgeFromDate(),
-                    Token = this.tokenService.CreateToken(user),
-                    Name = $"{user.FirstName} {user.MiddleName} {user.LastName}"
-                };
-                response.Data = userDto;
-            }
+                UserName = registerData.UserName,
+                Age = registerData.BirthDate.GetAgeFromDate(),
+                Token =await this.tokenService.CreateToken(user),
+                Name = $"{user.FirstName} {user.MiddleName} {user.LastName}"
+            };
+            response.Data = userDto;
 
             return response;
         }

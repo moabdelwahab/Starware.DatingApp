@@ -9,8 +9,8 @@ namespace Starware.DatingApp.Core.Domains
     public abstract class Entity
     {
         public int Id { get; set; }
-        public DateTime? CreationDate { get; set; }
-        public string? CreatedBy { get; set; }
+        public DateTime? CreationDate { get; set; } = DateTime.Now;
+        public string? CreatedBy { get; set; } 
         public DateTime? LastModifiedDate { get; set; }
         public string? LastModifiedBy { get; set; }
 

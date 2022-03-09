@@ -42,10 +42,11 @@ export class ListsComponent implements OnInit {
     this.getLikes();
   }
 
-
   likeRemoved(id: number) {
     let userIndex = this.userLikes.findIndex(user => user.id == id)
     this.userLikes.splice(userIndex, 1);
   }
+  
 
 }
+

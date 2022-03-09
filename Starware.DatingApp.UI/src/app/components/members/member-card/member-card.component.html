@@ -5,12 +5,15 @@
       <li class="list-inline-item"><button class="btn btn-primary" routerLink="/members/{{user.userName}}"><i
             class="fa fa-user"></i></button></li>
       <li class="list-inline-item"><button (click)="likeUser()" class="btn btn-primary"><i class="fa fa-heart"></i></button></li>
-      <li class="list-inline-item"><button class="btn btn-primary"><i class="fa fa-envelope"></i></button></li>
+      <li class="list-inline-item"><button routerLink="/members/{{user.userName}}" [queryParams]="{tab:3}" class="btn btn-primary"><i class="fa fa-envelope"></i></button></li>
 
     </ul>
   </div>
   <div class="card body p-1">
-    <h6 class="card-title mb-1"><i class="fa fa-user mr-2"></i>
+    <h6 class="card-title mb-1">
+      <span [class.is-online]="(presenceService.$onlineUsers | async).includes(user.userName)">
+        <i class="fa fa-user mr-2"></i>
+      </span>
       {{user.firstName}} , <span>{{user.age}}</span> <br>
     </h6>
    

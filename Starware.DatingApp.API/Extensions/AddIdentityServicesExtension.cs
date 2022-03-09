@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Starware.DatingApp.Core.Domains;
+using Starware.DatingApp.Persistence;
 using System.Text;
 
 namespace Starware.DatingApp.API.Extensions
@@ -8,6 +11,14 @@ namespace Starware.DatingApp.API.Extensions
     {
         public static void AddIdentityServices(this IServiceCollection services,IConfiguration configuration)
         {
+            services.AddIdentityCore<AppUser>(options =>
+            {
+            }).AddRoles<AppRole>()
+              .AddRoleManager<RoleManager<AppRole>>()
+              .AddSignInManager<SignInManager<AppUser>>()
+              .AddRoleValidator<RoleValidator<AppRole>>()
+              .AddEntityFrameworkStores<DatingAppContext>();
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -18,7 +29,27 @@ namespace Starware.DatingApp.API.Extensions
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
+                     {
+                         var accessToken = context.Request.Query["access_token"];
+                         var path = context.HttpContext.Request.Path;
+                         if (!string.IsNullOrEmpty(accessToken) & path.StartsWithSegments("/hubs"))
+                         {
+                             context.Token = accessToken;
+                         }
+
+                         return Task.CompletedTask;
+                     }
+                };h
             });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("newPolicy", policy => policy.RequireRole("Admin"));
+            });
+
         }
     }
 }

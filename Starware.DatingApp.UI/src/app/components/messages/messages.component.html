@@ -1,1 +1,47 @@
-<p>messages works!</p>
+<form action="" class="form-inline mb-4 d-flex justify-content-center">
+       <div class="btn-group ml-5">
+              <label #userLikesBtn name="inboxOrOutbox" class="btn btn-outline-success" (click)="getMessages()"
+                     btnRadio="Unread" tabindex="0" [(ngModel)]="container" role="button"><i
+                            class="bi bi-envelope mr-2"></i>Unread</label>
+              <label #userLikesBtn name="inboxOrOutbox" class="btn btn-outline-success" (click)="getMessages()"
+                     btnRadio="Inbox" tabindex="0" [(ngModel)]="container" role="button"><i
+                            class="bi bi-box-arrow-in-down mr-2"></i>Inbox</label>
+              <label (click)="getMessages()" name="inboxOrOutbox" class="btn btn-outline-success" btnRadio="Outbox"
+                     tabindex="0" [(ngModel)]="container" role="button"><i
+                            class="bi bi-box-arrow-up mr-2"></i>Outbox</label>
+       </div>
+</form>
+
+<div class="container">
+       <div class="table-responsive">
+              <table class="table email-table no-wrap table-hover v-middle mb-0 font-14">
+                     <tbody>
+                            <!-- row -->
+                            <tr *ngFor="let message of messages; let i =index" [ngClass]="{'bg-light': i % 2 == 0}">
+                                   <!-- label -->
+                                   <td>
+                                          <span class="mb-0 text-primary">{{ message.senderUsername == user.userName ? message.recipientUsername : message.senderUsername}}</span>
+                                   </td>
+                                   <!-- Message -->
+                                   <td>
+                                                 <img src="{{ message.senderUsername == user.userName ? message.recipientPhotoUrl : message.senderPhotoUrl}}" alt=""
+                                                        class="rounded-circle profile-img mr-3">
+                                                 <span class="text-dark">{{message.content}}</span>
+                                   </td>
+                                   <!-- Time -->
+                                   <td class="text-muted"><i class="bi bi-clock-history float-left mr-3"></i>
+                                          <div style="font-size:  small; color: green;" class="py-1" timeago
+                                                 [date]="message.creationDate" live></div>
+                                   </td>
+                            </tr>
+                     </tbody>
+              </table>
+       </div>
+</div>
+
+<div class="d-flex justify-content-center">
+       <pagination *ngIf="messages.length" [boundaryLinks]="true" [totalItems]="pagination.TotalCount"
+              [(ngModel)]="pagination.PageNumber" (pageChanged)="pageChanged($event)" previousText="&lsaquo;"
+              nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+       </pagination>
+</div>

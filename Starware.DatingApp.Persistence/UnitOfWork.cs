@@ -17,6 +17,8 @@ namespace Starware.DatingApp.Persistence
         private readonly IMapper mapper;
         private IUserRepository userRepository;
         private ILikeRepository likeRepository;
+        private IMessageRepository messageRepository;
+
 
         public UnitOfWork(DatingAppContext context ,IMapper mapper)
         {
@@ -44,6 +46,23 @@ namespace Starware.DatingApp.Persistence
                 }
                 return this.likeRepository;
             }
+        }
+
+        public IMessageRepository MessageRepository
+        {
+            get
+            {
+                if (this.messageRepository == null)
+                {
+                    this.messageRepository = new MessageRepository(context,mapper);
+                }
+                return this.messageRepository;
+            }
+        }
+
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }

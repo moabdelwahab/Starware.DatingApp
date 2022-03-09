@@ -1,44 +1,49 @@
-<div *ngIf="user.id" class="container mt-3">
+<div class="container">
     <div class="row">
         <div class="col-4">
             <div class="card">
                 <img src="{{ user.photoUrl || './assest/user.png'}}" class="card-img-top img-thumbnail" alt="">
                 <div class="card-body">
-                    <div>
-                        <strong>location :</strong>
-                        <p>{{ user.city }} , {{user.country}}</p>
-                    </div>
 
-                    <div>
-                        <strong>Age :</strong>
-                        <p>{{user.age}} </p>
+                    <div class="mb-2" *ngIf="(presenceService.$onlineUsers | async).includes(user.userName)">
+                        <span class="is-online">
+                            <i class="fa fa-user mr-2"></i> 
+                        </span>
                     </div>
+                    <h4>{{user.firstName}}</h4>
+                    <strong>location :</strong>
+                    <p>{{ user.city }} , {{user.country}}</p>
+
+                    <strong>Age :</strong>
+                    <p>{{user.age}} </p>
+
                 </div>
                 <div class="card-footer">
                     <div class="btn-group d-flex">
                         <button class="btn btn-primary">Like</button>
-                        <button class="btn btn-success">Message</button>
+                        <button (click)="selectTab(3)" class="btn btn-success">Message</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-8">
-            <tabset>
-                <tab heading="About {{user.userName}}" id="about">
+            <tabset #memberTabs>
+                <tab (selectTab)="onTabActivated($event)" heading="About {{user.userName}}" id="about">
                     <h4 class="mt-4">Description</h4>
                     <p>{{user.introduction}}</p>
                     <h4>Looking for</h4>
                     <p>{{user.lookingFor}}</p>
                 </tab>
-                <tab heading="Interests">
+                <tab (selectTab)="onTabActivated($event)" heading="Interests">
                     <h4 class="mt-4">Interests</h4>
                     <p>{{user.interests}}</p>
                 </tab>
-                <tab heading="Photos">
+                <tab (selectTab)="onTabActivated($event)" heading="Photos">
                     <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
                 </tab>
-                <tab heading="Messages">
-                    messages will goes here ....
+                <tab (selectTab)="onTabActivated($event)" heading="Messages">
+                    <app-member-messages style="top:0;" (messageAdded)="messageAdded($event)" [member]="user"
+                        [messages]="messages" [loggedUser]="loggedUser"></app-member-messages>
                 </tab>
             </tabset>
         </div>

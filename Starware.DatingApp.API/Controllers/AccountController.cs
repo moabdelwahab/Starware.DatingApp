@@ -25,6 +25,11 @@ namespace Starware.DatingApp.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<ApiResponse<UserDto>>> Login([FromBody] LoginDto loginData)
         {
+            var response = await this.accountService.Login(loginData);
+            if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return Unauthorized();
+            }
             return Ok(await this.accountService.Login(loginData));
         }
 

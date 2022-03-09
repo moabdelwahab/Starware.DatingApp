@@ -6,4 +6,5 @@ export class UserDto {
     token: string;
     photoUrl:string;
     lastActive:Date ;
+    roles :string[] = [];
 }

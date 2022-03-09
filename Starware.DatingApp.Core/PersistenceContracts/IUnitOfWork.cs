@@ -10,6 +10,10 @@ namespace Starware.DatingApp.Core.PersistenceContracts
     {
         public IUserRepository UserRepository { get; }
         public ILikeRepository LikeRepository { get; }
+        public IMessageRepository MessageRepository { get; }
+
+        public Task SaveAsync();
+
 
     }
 }
