@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using Starware.DatingApp.API.Extensions;
+using Starware.DatingApp.Core.Domains;
+using Starware.DatingApp.Core.DTOs;
+using Starware.DatingApp.Core.PersistenceContracts;
 using Starware.DatingApp.Core.ServiceContracts;
 
 namespace Starware.DatingApp.API.SignalR
@@ -7,10 +11,16 @@ namespace Starware.DatingApp.API.SignalR
     public class MessageHub : Hub
     {
         private readonly IUserService userService;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public MessageHub(IUserService userService)
+        public MessageHub(IUserService userService,
+                          IUnitOfWork unitOfWork,
+                          IMapper mapper)
         {
             this.userService = userService;
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public override async Task OnConnectedAsync()
@@ -28,11 +38,32 @@ namespace Starware.DatingApp.API.SignalR
             await base.OnDisconnectedAsync(exception);
         }
 
+        public async Task AddMessage(CreateMessageDto messageDto)
+        {
+
+            var user = await unitOfWork.UserRepository.GetByUserName(Context.User.GetUserName());
+            var recipet = await unitOfWork.UserRepository.GetByUserName(messageDto.RecipientUsername);
+
+            Message message = new Message();
+            message.RecipientId = recipet.Id;
+            message.Sender = user;
+            message.SenderId = user.Id;
+            message.Content = messageDto.Content;
+            message.CreatedBy = user.UserName;
+            message.RecipientUsername = recipet.UserName;
+            message.Recipient = recipet;
+            message.SenderUsername = user.UserName;
+            message.CreationDate = DateTime.Now;
+            await unitOfWork.MessageRepository.Insert(message);
+
+            await Clients.Groups(GetGroupName(user.UserName,recipet.UserName)).SendAsync("NewMessage",mapper.Map<MessageDto>(message));
+        }
+
 
         private string GetGroupName(string caller, string other)
         {
             var stringCompare = string.CompareOrdinal(caller, other) < 0;
-            return stringCompare ? $"{caller}-{other}" : $"{other}-{caller};
+            return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
         }
     }
 }

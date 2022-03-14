@@ -19,7 +19,6 @@ namespace Starware.DatingApp.API.Extensions
               .AddRoleValidator<RoleValidator<AppRole>>()
               .AddEntityFrameworkStores<DatingAppContext>();
 
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
@@ -42,7 +41,7 @@ namespace Starware.DatingApp.API.Extensions
 
                          return Task.CompletedTask;
                      }
-                };h
+                };
             });
 
             services.AddAuthorization(opt =>
