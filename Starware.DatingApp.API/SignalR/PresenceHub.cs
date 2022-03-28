@@ -18,7 +18,7 @@ namespace Starware.DatingApp.API.SignalR
         {
             Tracker.UserConnected(Context.User.GetUserName(), Context.ConnectionId);
             await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUserName());
-            var currentUsers = await  Tracker.GetOnlineUsers();
+            var currentUsers = await Tracker.GetOnlineUsers();
             await Clients.All.SendAsync("GetOnlineUsers", currentUsers);
 
         }

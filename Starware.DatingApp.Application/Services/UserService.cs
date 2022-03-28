@@ -27,7 +27,8 @@ namespace Starware.DatingApp.Application.Services
 
         public UserService(IUnitOfWork unitOfWork,
             IMapper mapper,
-            IPhotoService photoService)
+            IPhotoService photoService
+            )
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;

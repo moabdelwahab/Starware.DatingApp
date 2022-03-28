@@ -11,13 +11,16 @@ namespace Starware.DatingApp.API.Extensions
     {
         public static void AddIdentityServices(this IServiceCollection services,IConfiguration configuration)
         {
-            services.AddIdentityCore<AppUser>(options =>
-            {
-            }).AddRoles<AppRole>()
+            services.AddIdentityCore<AppUser>()
+              .AddRoles<AppRole>()
               .AddRoleManager<RoleManager<AppRole>>()
               .AddSignInManager<SignInManager<AppUser>>()
               .AddRoleValidator<RoleValidator<AppRole>>()
               .AddEntityFrameworkStores<DatingAppContext>();
+            var x = new string[]
+            {
+                "ahmed","mohamed","Ali"
+            };
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -46,7 +49,9 @@ namespace Starware.DatingApp.API.Extensions
 
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("newPolicy", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("newPolicy", policy => {
+                    policy.RequireRole("Admin");
+                });
             });
 
         }

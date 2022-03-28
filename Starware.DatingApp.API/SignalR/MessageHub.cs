@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Starware.DatingApp.API.Extensions;
 using Starware.DatingApp.Core.Domains;
@@ -8,6 +9,7 @@ using Starware.DatingApp.Core.ServiceContracts;
 
 namespace Starware.DatingApp.API.SignalR
 {
+    [Authorize]
     public class MessageHub : Hub
     {
         private readonly IUserService userService;
@@ -30,7 +32,7 @@ namespace Starware.DatingApp.API.SignalR
             var groupName = GetGroupName(Context.User.GetUserName(), otherUser);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             var messages = await this.userService.GetMessageThread(Context.User.GetUserName(), otherUser);
-            await Clients.Group(groupName).SendAsync("ReciveMessageThread",messages);
+            await Clients.Group(groupName).SendAsync("ReciveMessageThread",messages.Data);
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -43,6 +45,10 @@ namespace Starware.DatingApp.API.SignalR
 
             var user = await unitOfWork.UserRepository.GetByUserName(Context.User.GetUserName());
             var recipet = await unitOfWork.UserRepository.GetByUserName(messageDto.RecipientUsername);
+
+            if(user == null ) throw new HubException();
+
+            if (recipet == null) throw new HubException();
 
             Message message = new Message();
             message.RecipientId = recipet.Id;
@@ -57,8 +63,8 @@ namespace Starware.DatingApp.API.SignalR
             await unitOfWork.MessageRepository.Insert(message);
 
             await Clients.Groups(GetGroupName(user.UserName,recipet.UserName)).SendAsync("NewMessage",mapper.Map<MessageDto>(message));
-        }
 
+        }
 
         private string GetGroupName(string caller, string other)
         {

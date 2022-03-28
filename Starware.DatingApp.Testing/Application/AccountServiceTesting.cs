@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace Starware.DatingApp.Testing.Application
 {
     [TestClass]
-    public class AccountServiceTesting
+    public class AccountServiceTesting 
     {
-
+        
     }
 }

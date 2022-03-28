@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MemberDto } from 'src/app/models/users/MemberDto';
 import { UsersService } from 'src/app/services/users.service';
@@ -18,14 +18,14 @@ import { PresenceService } from 'src/app/services/presence.service';
   templateUrl: './member-detail.component.html',
   styleUrls: ['./member-detail.component.css']
 })
-export class MemberDetailComponent implements OnInit, AfterViewInit {
+export class MemberDetailComponent implements OnInit, AfterViewInit ,OnDestroy {
 
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[] = [];
   user: MemberDto = new MemberDto();
   messages: Message[] = [];
   loggedUser: UserDto;
-  @ViewChild('memberTabs') memberTabs: TabsetComponent;
+  @ViewChild('memberTabs',{static:true}) memberTabs: TabsetComponent;
   selectedTab: TabDirective;
 
   constructor(private userService: UsersService,
@@ -33,7 +33,6 @@ export class MemberDetailComponent implements OnInit, AfterViewInit {
     private messageService: MessagesService,
     private accountService: AccountService,
     public presenceService: PresenceService) {
-
   }
 
   ngAfterViewInit(): void {
@@ -42,38 +41,24 @@ export class MemberDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.user = data.member.data;
     }, error => {
       console.log(error),
-      () => {
-        for (let i = 0; i < this.user.photos.length; i++) {
-          this.addGelleryImages(this.user.photos[i].url)
+        () => {
+          for (let i = 0; i < this.user.photos.length; i++) {
+            this.addGelleryImages(this.user.photos[i].url)
+          }
         }
-      }
     });
-
 
     this.accountService.$currentUser.pipe(take(1)).subscribe(response => {
       this.loggedUser = response;
     });
 
-
     this.setGalleryOptions();
-
   }
-
-  getUserMessages() {
-    this.messageService.getMessageThread(this.user.userName).subscribe(
-      (response) => {
-        this.messages = response.data;
-        console.log(this.messages);
-      })
-  }
-
 
   setGalleryOptions() {
     this.galleryOptions = [
@@ -107,7 +92,12 @@ export class MemberDetailComponent implements OnInit, AfterViewInit {
 
   onTabActivated(data: TabDirective) {
     this.selectedTab = data;
-    if (this.selectedTab.heading == "Messages") { this.getUserMessages(); }
+    if (this.selectedTab.heading == "Messages") { 
+      this.messageService.createHubConnection(this.loggedUser,this.user.userName);
+     }else
+     {
+       this.messageService.StopHubConnection();
+     }
   }
 
   selectTab(index: number) {
@@ -123,4 +113,9 @@ export class MemberDetailComponent implements OnInit, AfterViewInit {
       big: photoUrl
     });
   }
+
+  ngOnDestroy(): void {
+    this.messageService.StopHubConnection();
+  }
+
 }

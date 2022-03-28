@@ -3,8 +3,8 @@
 			<div class="card">
 				<div class="card-header">Chat</div>
 				<div class="card-body height3">
-					<ul class="chat-list">
-						<li *ngFor="let message of messages"
+					<ul #scrollMe class="chat-list">
+						<li *ngFor="let message of messageService.$messagesThread | async"
 							[ngClass]="{'in':message.senderUsername != loggedUser.userName ,'out' : message.senderUsername == loggedUser.userName}">
 							<div class="chat-img">
 								<img alt="Avtar" src="{{message.senderPhotoUrl}}">
